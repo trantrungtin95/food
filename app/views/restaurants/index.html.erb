@@ -1,26 +1,12 @@
 <p id="notice"><%= notice %></p>
-<hr/>
-<p>
-  <strong>Name:</strong>
-  <%= @user.name %>
-</p>
 
-<p>
-  <strong>Status:</strong>
-  <%= @user.status %>
-</p>
-<% if @current_user.id == @user.id%>
-  <%= link_to 'Edit', edit_user_path(@user) %> |
-<% end %>
-<%= link_to 'Back', users_path %>
+<h1>Restaurants</h1>
 <hr/>
-<div class='text-my-restaurant'>
-<h2>My Restaurants:</h2></div>
-<div class='my-restaurant'>
 <table>
   <thead>
     <tr>
       <th>Name</th>
+      <th>User</th>
       <th>Address</th>
       <th>Open time</th>
       <th>Close time</th>
@@ -29,9 +15,10 @@
   </thead>
 
   <tbody>
-    <% Restaurant.where(user_id: @user.id).each do |restaurant| %>
+    <% @restaurants.each do |restaurant| %>
       <tr>
         <td><strong><%= link_to restaurant.name, restaurant_path(restaurant) %></strong></td>
+        <td><strong><%= link_to restaurant.user.name, user_path(restaurant.user) %></strong></td>
         <td><strong><%= restaurant.address %></strong></td>
         <td><strong><%= restaurant.open_time %></strong></td>
         <td><strong><%= restaurant.close_time %></strong></td>
@@ -43,5 +30,8 @@
     <% end %>
   </tbody>
 </table>
-</div>
+
+<br>
+
+<%= link_to 'New Restaurant', new_restaurant_path %>
 <p><%= will_paginate @restaurants %></p>

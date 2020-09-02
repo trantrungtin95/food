@@ -13,3 +13,16 @@
  *= require_tree .
  *= require_self
  */
+
+ .show-restaurant {
+    text-align: center;
+ }
+
+ .menu {
+    text-align: center;
+ }
+
+ .my-restaurant {
+     padding-top: 50px;
+     text-align: center;
+ }

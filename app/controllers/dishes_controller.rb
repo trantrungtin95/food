@@ -4,7 +4,8 @@ class DishesController < ApplicationController
   # GET /dishes
   # GET /dishes.json
   def index
-    @dishes = Dish.all
+    puts "======================================"
+    @dishes = Dish.paginate(:page => params[:page], :per_page => 10).order('created_at desc')
   end
 
   # GET /dishes/1
@@ -19,6 +20,7 @@ class DishesController < ApplicationController
 
   # GET /dishes/1/edit
   def edit
+    redirect_to root_path if @current_user.id != @dish.user_id
   end
 
   # POST /dishes
@@ -69,6 +71,6 @@ class DishesController < ApplicationController
 
     # Only allow a list of trusted parameters through.
     def dish_params
-      params.require(:dish).permit(:name, :image_url, :price)
+      params.require(:dish).permit(:name, :image_url, :price, :user_id, :restaurant_id)
     end
 end

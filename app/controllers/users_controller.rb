@@ -1,34 +1,43 @@
 class UsersController < ApplicationController
+  skip_before_action :authorize, only: [:new, :create]
   before_action :set_user, only: [:show, :edit, :update, :destroy]
 
   # GET /users
   # GET /users.json
   def index
+    if @current_user.id != 1
+      redirect_to root_path
+    end
     @users = User.all
   end
 
   # GET /users/1
   # GET /users/1.json
   def show
+    @restaurants = Restaurant.where(user_id: @user.id).paginate(:page => params[:page], :per_page => 10).order('created_at desc')
   end
 
   # GET /users/new
   def new
-    @user = User.new
+    if session[:user_id] == nil
+      @user = User.new
+    else
+      redirect_to root_path
+    end
   end
 
   # GET /users/1/edit
   def edit
+    redirect_to root_path if @current_user.id != @user.id
   end
 
   # POST /users
   # POST /users.json
   def create
     @user = User.new(user_params)
-
     respond_to do |format|
       if @user.save
-        format.html { redirect_to @user, notice: 'User was successfully created.' }
+        format.html { redirect_to sessions_new_path, notice: 'User was successfully created.' }
         format.json { render :show, status: :created, location: @user }
       else
         format.html { render :new }
@@ -69,6 +78,7 @@ class UsersController < ApplicationController
 
     # Only allow a list of trusted parameters through.
     def user_params
-      params.require(:user).permit(:name, :status)
+      params.require(:user).permit(:name, :hashed_password, :salt, :password, :password_confirmation, :email, :avatar)
     end
+
 end

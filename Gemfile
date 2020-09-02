@@ -26,6 +26,9 @@ gem 'jbuilder', '~> 2.7'
 # gem 'image_processing', '~> 1.2'
 
 # Reduces boot times through caching; required in config/boot.rb
+gem "bootstrap-sass"
+gem 'bootstrap'
+gem 'will_paginate', '>= 3.0'
 gem 'bootsnap', '>= 1.4.2', require: false
 
 group :development, :test do

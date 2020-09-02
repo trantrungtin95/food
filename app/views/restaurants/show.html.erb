@@ -1,0 +1,54 @@
+<p id="notice"><%= notice %></p>
+<hr/>
+<div class='show-restaurant'>
+<p>
+  <strong><h1><%= @restaurant.name %></h1></strong>
+</p>
+
+<p>
+  <strong>Owner:</strong>
+  <%= @restaurant.user.name %>
+</p>
+
+<p>
+  <strong>Address:</strong>
+  <%= @restaurant.address %>
+</p>
+
+<p>
+  <strong>Open time:</strong>
+  <%= @restaurant.open_time %>
+</p>
+
+<p>
+  <strong>Close time:</strong>
+  <%= @restaurant.close_time %>
+</p>
+<% if @current_user.id == @restaurant.user.id %>
+  <%= link_to 'Edit', edit_restaurant_path(@restaurant) %> |
+  <%= link_to 'Destroy', @restaurant, method: :delete, data: { confirm: 'Are you sure?' } %> |
+<% end %>
+<%= link_to 'Back', restaurants_path %>
+</div>
+<hr/>
+
+<div class="menu"><h3>MENU</h3></div>
+
+<div class="row">
+  <% @dishes.each do |dish|%>
+      <div class="col-lg-4 col-md-6 mb-4">
+        <div class="card h-100">
+          <div class="card-body">
+            <%= link_to image_tag(dish.image_url, class:"image-url"), dish_path(dish) %>
+            <h4 class="card-title">
+              <%= link_to dish.name, dish_path(dish) %> :<%= dish.price %>đ
+            </h4>
+          </div>
+        </div>
+      </div>
+  <%  end %>     
+</div>
+<% if @current_user.id == @restaurant.user.id%>
+  <%= link_to 'New Dish', new_restaurant_dish_path(@restaurant.id) %>
+<% end %>
+<p><%= will_paginate @dishes %></p>

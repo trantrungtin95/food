@@ -1,0 +1,23 @@
+<% if notice %>
+   <p id="notice"><%= notice %></p>
+<% end %>
+ 
+<h1>Dish List</h1>
+<hr/>
+ 
+    <div class="row">
+
+        <% @dishes.each do |dish| %>
+                <div class="col-lg-4 col-md-6 mb-4">
+                    <div class="card h-100">
+                        <div class="card-body">
+                                <%= link_to image_tag(dish.image_url, class:"image-url"), dish_path(dish) %>
+                            <h4 class="card-title">
+                                <%= link_to dish.name, dish_path(dish) %> :<%= dish.price %>đ
+                            </h4>
+                        </div>
+                    </div>
+                </div>
+        <%  end %>
+    </div>
+    <p><%= will_paginate @dishes %></p>

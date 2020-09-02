@@ -9,7 +9,31 @@
     <%= javascript_pack_tag 'application', 'data-turbolinks-track': 'reload' %>
   </head>
 
-  <body>
-    <%= yield %>
-  </body>
+  <body id="store">
+    <div id="banner">
+        <h4><%= @page_title || "RESTAURANT ONLINE:" %></h4>
+    </div>
+    <div id="columns">
+        <div id="side">
+            <a href="/">Home</a><br />
+            <%= link_to "Dishes", dishes_path %><br />
+            <%= link_to "Restaurants", restaurants_path %><br />
+            <% if session[:user_id] %>
+              <li class="nav-item">
+                <%= link_to 'User', user_path(session[:user_id]) %>
+              </li>
+              <li class="nav-item">
+                <%= link_to 'Log Out', sessions_destroy_path%>
+              </li>
+              <% else %>
+              <li class="nav-item">
+                <%= link_to 'Log In', sessions_new_path%>
+              </li>
+            <% end %>
+        </div>
+        <div id="main">
+            <%= yield %>
+        </div>
+    </div> 
+</body>
 </html>
