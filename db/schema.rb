@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2020_09_02_111448) do
+ActiveRecord::Schema.define(version: 2020_09_03_030350) do
 
   create_table "dishes", force: :cascade do |t|
     t.string "name"
@@ -26,8 +26,8 @@ ActiveRecord::Schema.define(version: 2020_09_02_111448) do
     t.string "name"
     t.string "user_id"
     t.string "address"
-    t.string "open_time"
-    t.string "close_time"
+    t.datetime "open_time"
+    t.datetime "close_time"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
   end
