@@ -17,6 +17,7 @@
 <div class='text-my-restaurant'>
 <h2>My Restaurants:</h2></div>
 <div class='my-restaurant'>
+<% if @current_user.restaurants.present? %>
 <table>
   <thead>
     <tr>
@@ -29,7 +30,7 @@
   </thead>
 
   <tbody>
-    <% Restaurant.where(user_id: @user.id).each do |restaurant| %>
+    <% @current_user.restaurants.each do |restaurant| %>
       <tr>
         <td><strong><%= link_to restaurant.name, restaurant_path(restaurant) %></strong></td>
         <td><strong><%= restaurant.address %></strong></td>
@@ -43,5 +44,7 @@
     <% end %>
   </tbody>
 </table>
+<% end %>
 </div>
+<%= link_to 'New Restaurant', new_restaurant_path %>
 <p><%= will_paginate @restaurants %></p>

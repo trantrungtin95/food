@@ -30,7 +30,10 @@ class RestaurantsController < ApplicationController
 
     respond_to do |format|
       if @restaurant.save
-        
+        if @current_user.status == :owner
+        else
+          @current_user.update(status: :owner)
+        end
         format.html { redirect_to @restaurant, notice: 'Restaurant was successfully created.' }
         format.json { render :show, status: :created, location: @restaurant }
       else
@@ -58,8 +61,12 @@ class RestaurantsController < ApplicationController
   # DELETE /restaurants/1.json
   def destroy
     @restaurant.destroy
+    if @current_user.restaurants.count > 0
+    else
+      @current_user.update(status: :costomer)
+    end
     respond_to do |format|
-      format.html { redirect_to restaurants_url, notice: 'Restaurant was successfully destroyed.' }
+      format.html { redirect_to user_path(@current_user), notice: 'Restaurant was successfully destroyed.' }
       format.json { head :no_content }
     end
   end
