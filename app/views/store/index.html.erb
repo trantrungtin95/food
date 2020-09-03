@@ -14,6 +14,10 @@
                                 <%= link_to image_tag(dish.image_url, class:"image-url"), dish_path(dish) %>
                             <h4 class="card-title">
                                 <%= link_to dish.name, dish_path(dish) %> :<%= dish.price %>đ
+                                <p>Address: <%= dish.restaurant.address %></p>
+                                <div class="card-footer">
+                                    <%= button_to 'Add to Cart', line_items_path(:dish_id => dish) %>
+                                </div>
                             </h4>
                         </div>
                     </div>

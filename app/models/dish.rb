@@ -8,4 +8,18 @@ class Dish < ApplicationRecord
               :with => %r{\.(gif|jpg|png|jpeg)\Z}i,
               :message => 'Chi nhan file GIF, JPG, PNG, JPEG'
     }
+
+    has_many :line_items
+    before_destroy :check_if_has_line_item
+
+    private
+  
+    def check_if_has_line_item
+        if line_items.empty?
+            return true
+        else
+            errors.add(:base, 'This dish has a LineItem')
+            return false
+        end
+    end
 end
