@@ -1,4 +1,5 @@
 class DishesController < ApplicationController
+  skip_before_action :verify_authenticity_token
   before_action :set_dish, only: [:show, :edit, :update, :destroy]
 
   # GET /dishes
@@ -6,6 +7,15 @@ class DishesController < ApplicationController
   def index
     puts "======================================"
     @dishes = Dish.paginate(:page => params[:page], :per_page => 10).order('created_at desc')
+    # @dishes = Dish.none.paginate(:page => params[:page], :per_page => 10)
+    @restaurants = []
+    if params['q'].present?
+      if params[:type] == "Restaurant"
+        @restaurants = Restaurant.find_restaurants_name(params['q']).order('created_at desc').paginate(:page => params[:page], :per_page => 10)
+      else
+        @dishes = Dish.find_dishes_name(params['q']).order('created_at desc').paginate(:page => params[:page], :per_page => 10)
+      end
+    end 
   end
 
   # GET /dishes/1

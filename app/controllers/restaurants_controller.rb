@@ -20,7 +20,7 @@ class RestaurantsController < ApplicationController
 
   # GET /restaurants/1/edit
   def edit
-    redirect_to root_path if @current_user.id != @user.id
+    redirect_to root_path if @current_user.id != @restaurant.user.id
   end
 
   # POST /restaurants

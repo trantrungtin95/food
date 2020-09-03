@@ -1,5 +1,5 @@
 <p id="notice"><%= notice %></p>
-
+<% if params[:type] != "Restaurant" %>
 <h1>Dishes</h1>
 <hr/>
 
@@ -16,19 +16,45 @@
   <tbody>
     <% @dishes.each do |dish| %>
       <tr>
-        <td><%= link_to dish.name,dish_path(dish) %></td>
+        <td><%= link_to dish.name, dish_path(dish) %></td>
         <td>
-          <%= link_to image_tag(dish.image_url, class:"image-url"), dish_path(dish) %>
+          <%= link_to image_tag(dish.image_url, class: "image-url"), dish_path(dish) %>
         </td>
         <td><%= dish.price %>đ</td>
-        <% if @current_user.id == dish.user_id %>
-          <td><%= link_to 'Edit', edit_dish_path(dish) %></td>
-          <td><%= link_to 'Destroy', dish, method: :delete, data: { confirm: 'Are you sure?' } %></td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>
+<% else %>
+<table>
+  <thead>
+    <tr>
+      <th>Name</th>
+      <th>User</th>
+      <th>Address</th>
+      <th>Open time</th>
+      <th>Close time</th>
+      <th colspan="3"></th>
+    </tr>
+  </thead>
+
+  <tbody>
+    <% @restaurants.each do |restaurant| %>
+      <tr>
+        <td><strong><%= link_to restaurant.name, restaurant_path(restaurant) %></strong></td>
+        <td><strong><%= link_to restaurant.user.name, user_path(restaurant.user) %></strong></td>
+        <td><strong><%= restaurant.address %></strong></td>
+        <td><strong><%= restaurant.open_time.strftime("%I:%M %p") %></strong></td>
+        <td><strong><%= restaurant.close_time.strftime("%I:%M %p") %></strong></td>
+        <% if @current_user.id == restaurant.user_id%>
+          <td><%= link_to 'Edit', edit_restaurant_path(restaurant) %></td>
+          <td><%= link_to 'Destroy', restaurant, method: :delete, data: { confirm: 'Are you sure?' } %></td>
         <% end %>
       </tr>
     <% end %>
   </tbody>
 </table>
+<% end %>
 
 <br>
 

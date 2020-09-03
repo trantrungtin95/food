@@ -11,15 +11,25 @@
 
   <body id="store">
     <div id="banner">
-        <h4><%= @page_title || "RESTAURANT ONLINE:" %></h4>
+        <a class="navbar-brand" href="/">RESTAURANT ONLINE:</a>
     </div>
     <div id="columns">
         <div id="side">
           <div id="cart">
             <%= hide_cart_if(current_cart.line_items.empty?, :id => "cart") do %>
+            <%# <% if current_cart.line_items.present? %> %>
                 <p>
                   <%= render(current_cart) %> 
                 </p>
+            <% end %>
+          </div>
+          <div align="right">
+            <%= form_tag(dishes_path, :method => "get") do %>
+              
+              <%= label_tag(:q,"Search:")%>
+              <%= select_tag :type, options_for_select(['Dish', 'Restaurant']) %>
+              <%= text_field_tag(:q)%>
+              <%= submit_tag("Search")%>
             <% end %>
           </div>
             <a href="/">Home</a><br />

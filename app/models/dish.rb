@@ -12,6 +12,9 @@ class Dish < ApplicationRecord
     has_many :line_items
     before_destroy :check_if_has_line_item
 
+    scope :find_dishes_name, -> (search){ where("name LIKE ?", "%#{search}%")}
+    # Ex:- scope :active, -> {where(:active => true)}
+
     private
   
     def check_if_has_line_item
