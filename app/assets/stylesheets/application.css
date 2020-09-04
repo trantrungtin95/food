@@ -46,3 +46,12 @@
    height: 50px;
    overflow: scroll;
 }
+
+#cart {
+   position: fixed;
+   top: 4px;
+   right: 5px;
+   width: 200px;
+   height: 250px;
+   overflow: scroll;
+}
