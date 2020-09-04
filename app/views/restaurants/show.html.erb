@@ -28,30 +28,31 @@
   <%= link_to 'Edit', edit_restaurant_path(@restaurant) %> |
   <%= link_to 'Destroy', @restaurant, method: :delete, data: { confirm: 'Are you sure?' } %> |
 <% end %>
-<%= link_to 'Back', restaurants_path %>
+<%= link_to 'Back', root_path %>
 </div>
 <hr/>
 
 <div class="menu"><h3>MENU</h3></div>
 
 <div class="row">
-  <% @dishes.each do |dish|%>
-      <div class="col-lg-4 col-md-6 mb-4">
-        <div class="card h-100">
-          <div class="card-body">
-            <%= link_to image_tag(dish.image_url, class:"image-url"), dish_path(dish) %>
-            <h4 class="card-title">
-              <%= link_to dish.name, dish_path(dish) %> :<%= dish.price %>đ
-            <% if @current_user.id == dish.user_id %>
-              <%= link_to 'Edit', edit_dish_path(dish) %>
-              <%= link_to 'Destroy', dish, method: :delete, data: { confirm: 'Are you sure?' } %>
-            <% end %>
-            </h4>
-          </div>
-        </div>
-      </div>
-  <%  end %>     
-</div>
+
+        <% @dishes.each do |dish| %>
+                <div class="col-lg-4 col-md-6 mb-4">
+                    <div class="card h-100">
+                        <div class="card-body">
+                                <%= link_to image_tag(dish.image_url, class:"image-url"), dish_path(dish) %>
+                            <h4 class="card-title">
+                                <%= link_to dish.name, dish_path(dish) %> :<%= dish.price %>đ
+                                <div class="address"><%= link_to dish.restaurant.name, restaurant_path(dish.restaurant) %>,<%= dish.restaurant.address %></div>
+                                <div class="card-footer">
+                                    <%= button_to 'Add to Cart', line_items_path(:dish_id => dish), remote: :true %>
+                                </div>
+                            </h4>
+                        </div>
+                    </div>
+                </div>
+        <%  end %>
+    </div>
 <% if @current_user.id == @restaurant.user.id%>
   <%= link_to 'New Dish', new_restaurant_dish_path(@restaurant.id) %>
 <% end %>

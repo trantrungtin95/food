@@ -17,7 +17,6 @@
     <div align="right", id="home">
       <h4>
         <%= link_to "Home", root_path %>
-        <%= link_to "Dishes", dishes_path %>
         <%= link_to "Restaurants", restaurants_path %>
         <% if session[:user_id] %>
             <%= link_to 'User', user_path(session[:user_id]) %>

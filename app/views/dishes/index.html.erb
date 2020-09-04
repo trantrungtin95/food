@@ -1,30 +1,27 @@
 <p id="notice"><%= notice %></p>
 <% if params[:type] != "Restaurant" %>
-<h1>Dishes</h1>
+<h1>Dishes List</h1>
 <hr/>
 
-<table>
-  <thead>
-    <tr>
-      <th>Name</th>
-      <th>Image url</th>
-      <th>Price</th>
-      <th colspan="3"></th>
-    </tr>
-  </thead>
+<div class="row">
 
-  <tbody>
-    <% @dishes.each do |dish| %>
-      <tr>
-        <td><%= link_to dish.name, dish_path(dish) %></td>
-        <td>
-          <%= link_to image_tag(dish.image_url, class: "image-url"), dish_path(dish) %>
-        </td>
-        <td><%= dish.price %>đ</td>
-      </tr>
-    <% end %>
-  </tbody>
-</table>
+        <% @dishes.each do |dish| %>
+                <div class="col-lg-4 col-md-6 mb-4">
+                    <div class="card h-100">
+                        <div class="card-body">
+                                <%= link_to image_tag(dish.image_url, class:"image-url"), dish_path(dish) %>
+                            <h4 class="card-title">
+                                <%= link_to dish.name, dish_path(dish) %> :<%= dish.price %>đ
+                                <div class="address"><%= link_to dish.restaurant.name, restaurant_path(dish.restaurant) %>,<%= dish.restaurant.address %></div>
+                                <div class="card-footer">
+                                    <%= button_to 'Add to Cart', line_items_path(:dish_id => dish), remote: :true %>
+                                </div>
+                            </h4>
+                        </div>
+                    </div>
+                </div>
+        <%  end %>
+    </div>
 <% else %>
 <table>
   <thead>
