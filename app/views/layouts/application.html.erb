@@ -11,8 +11,21 @@
   </head>
 
   <body id="store">
-    <div id="banner">
-        <a class="navbar-brand" href="/">RESTAURANT ONLINE:</a>
+    <div align="left", id="banner">
+        <a class="navbar-brand" href="/"><h1>RESTAURANT ONLINE:</h1></a>
+    </div>
+    <div align="right", id="home">
+      <h4>
+        <%= link_to "Home", root_path %>
+        <%= link_to "Dishes", dishes_path %>
+        <%= link_to "Restaurants", restaurants_path %>
+        <% if session[:user_id] %>
+            <%= link_to 'User', user_path(session[:user_id]) %>
+            <%= link_to 'Log Out', sessions_destroy_path%>
+          <% else %>
+            <%= link_to 'Log In', sessions_new_path%>
+        <% end %>
+      </h4>
     </div>
     <div id="columns">
         <div id="side">
@@ -24,7 +37,14 @@
                 </p>
             <% end %>
           </div>
-          <div align="right">
+          <div align="left">
+          <% if session[:user_id]%>
+          <h1>
+          Hello <%= User.find(session[:user_id]).name %>
+          </h1>
+          <% end %>
+          </div>
+          <div align="right", id="search">
             <%= form_tag(dishes_path, :method => "get") do %>
               
               <%= label_tag(:q,"Search:")%>
@@ -33,21 +53,6 @@
               <%= submit_tag("Search")%>
             <% end %>
           </div>
-            <a href="/">Home</a><br />
-            <%= link_to "Dishes", dishes_path %><br />
-            <%= link_to "Restaurants", restaurants_path %><br />
-            <% if session[:user_id] %>
-              <li class="nav-item">
-                <%= link_to 'User', user_path(session[:user_id]) %>
-              </li>
-              <li class="nav-item">
-                <%= link_to 'Log Out', sessions_destroy_path%>
-              </li>
-              <% else %>
-              <li class="nav-item">
-                <%= link_to 'Log In', sessions_new_path%>
-              </li>
-            <% end %>
         </div>
         <div id="main">
             <%= yield %>

@@ -1,5 +1,4 @@
 class LineItemsController < ApplicationController
-  skip_before_action :authorize, :only => :create
 
   # GET /line_items
   # GET /line_items.json

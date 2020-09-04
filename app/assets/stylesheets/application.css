@@ -65,3 +65,21 @@
 .field select, .field textarea, .field input {
    margin-left: 0.5em;
 }
+
+#cart{
+    position: fixed;
+    top: 4px;
+    right: 5px;
+    width: 238px;
+    height: 250px;
+    overflow: scroll;
+    padding-top: 250px;
+}
+
+#home {
+   padding-right: 200px;
+}
+
+#search {
+   padding-right: 200px;
+}
