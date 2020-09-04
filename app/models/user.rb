@@ -1,6 +1,7 @@
 require 'digest/sha2'
 
 class User < ApplicationRecord
+    has_many :orders
     has_many :restaurants
     has_many :dishes
     validates :name, :presence => true, :uniqueness => true

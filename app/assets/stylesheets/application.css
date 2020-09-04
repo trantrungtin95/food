@@ -47,11 +47,21 @@
    overflow: scroll;
 }
 
-#cart {
-   position: fixed;
-   top: 4px;
-   right: 5px;
-   width: 200px;
-   height: 250px;
-   overflow: scroll;
+/* Order form style */
+.new_order {
+   background: #efe;
+}
+
+
+.field label {
+   width: 5em;
+   float: left;
+   text-align: right;
+   padding-top: 0.2em;
+   margin-right: 0.1em;
+   display: block;
+}
+
+.field select, .field textarea, .field input {
+   margin-left: 0.5em;
 }

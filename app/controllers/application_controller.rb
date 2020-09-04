@@ -10,7 +10,7 @@ class ApplicationController < ActionController::Base
         session[:cart_id] = cart.id
         cart
     end
-    
+
     helper_method :current_cart
 
     protected
@@ -20,6 +20,7 @@ class ApplicationController < ActionController::Base
             redirect_to '/login', :notice => 'You must login first'
         end
     end
+
 
     def current_user
       @current_user

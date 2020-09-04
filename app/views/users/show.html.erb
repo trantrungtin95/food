@@ -10,6 +10,7 @@
   <%= @user.status %>
 </p>
 <% if @current_user.id == @user.id%>
+  <p><%= link_to 'My Orders', orders_path(@user) %></p>
   <%= link_to 'Edit', edit_user_path(@user) %> |
 <% end %>
 <%= link_to 'Back', users_path %>

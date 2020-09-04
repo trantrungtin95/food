@@ -18,6 +18,7 @@
         <div id="side">
           <div id="cart">
             <%= hide_cart_if(current_cart.line_items.empty?, :id => "cart") do %>
+            <%# <% if current_cart.line_items.present? %> 
                 <p>
                   <%= render(current_cart) %> 
                 </p>
