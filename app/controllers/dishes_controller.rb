@@ -74,7 +74,6 @@ class DishesController < ApplicationController
   end
 
   def vote
-    debugger
     @vote = Vote.create()
   end
 
@@ -83,6 +82,7 @@ class DishesController < ApplicationController
     def set_dish
       @dish = Dish.find(params[:id])
     end
+
 
     # Only allow a list of trusted parameters through.
     def dish_params

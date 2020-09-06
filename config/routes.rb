@@ -7,9 +7,7 @@ Rails.application.routes.draw do
   get 'sessions/new'
   get 'sessions/create'
   get 'sessions/destroy'
-  resources :restaurants do
-    resources :dishes
-  end
+  resources :restaurants 
   resources :dishes
 
   get 'store/index'

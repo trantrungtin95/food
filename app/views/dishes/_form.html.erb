@@ -1,4 +1,5 @@
 <%= form_with(model: dish, local: true) do |form| %>
+<% debugger %>
   <% if dish.errors.any? %>
     <div id="error_explanation">
       <h2><%= pluralize(dish.errors.count, "error") %> prohibited this dish from being saved:</h2>
@@ -16,7 +17,7 @@
   </div>
 
   <div>
-   <%= form.hidden_field :restaurant_id, value: params[:restaurant_id] %>
+   <%= form.hidden_field :restaurant_id, value: params[:format] %>
   </div>
 
   <div class="field">
@@ -28,11 +29,11 @@
     <%= form.label :image_url %>
     <%= form.text_field :image_url %>
   </div>
-
   <div class="field">
     <%= form.label :price %>
     <%= form.text_field :price %>
   </div>
+
 
   <div class="actions">
     <%= form.submit %>

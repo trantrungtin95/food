@@ -61,6 +61,6 @@
         <%  end %>
     </div>
 <% if @current_user.id == @restaurant.user.id%>
-  <%= link_to 'New Dish', new_restaurant_dish_path(@restaurant.id) %>
+  <%= link_to 'New Dish', new_dish_path(@restaurant) %>
 <% end %>
 <p><%= will_paginate @dishes %></p>
