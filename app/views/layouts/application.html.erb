@@ -29,7 +29,7 @@
     </div>
     <div id="columns">
         <div id="side">
-          <div align="left", id="user-name">
+          <div align="left">
             <% if session[:user_id]%>
               <h1>
                 Hello <%= User.find(session[:user_id]).name %>
