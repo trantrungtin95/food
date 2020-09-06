@@ -9,11 +9,16 @@ class Dish < ApplicationRecord
               :message => 'Chi nhan file GIF, JPG, PNG, JPEG'
     }
 
+    has_many :votes
     has_many :line_items
     before_destroy :check_if_has_line_item
 
     scope :find_dishes_name, -> (search){ where("name LIKE ?", "%#{search}%")}
     # Ex:- scope :active, -> {where(:active => true)}
+
+    def dish_vote
+        sprintf "%.2f" % ((self.votes.pluck(:rate).sum).fdiv(self.votes.pluck(:rate).size))
+    end
 
     private
   

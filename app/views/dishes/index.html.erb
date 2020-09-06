@@ -4,24 +4,30 @@
 <hr/>
 
 <div class="row">
-
-        <% @dishes.each do |dish| %>
-                <div class="col-lg-4 col-md-6 mb-4">
-                    <div class="card h-100">
-                        <div class="card-body">
-                                <%= link_to image_tag(dish.image_url, class:"image-url"), dish_path(dish) %>
-                            <h4 class="card-title">
-                                <%= link_to dish.name, dish_path(dish) %> :<%= dish.price %>đ
-                                <div class="address"><%= link_to dish.restaurant.name, restaurant_path(dish.restaurant) %>,<%= dish.restaurant.address %></div>
-                                <div class="card-footer">
-                                    <%= button_to 'Add to Cart', line_items_path(:dish_id => dish), remote: :true %>
-                                </div>
-                            </h4>
-                        </div>
-                    </div>
-                </div>
-        <%  end %>
+  <% @dishes.each do |dish| %>
+    <div class="col-lg-4 col-md-6 mb-4">
+      <div class="card h-100">
+        <div class="card-body">
+          <%= link_to image_tag(dish.image_url, class:"image-url"), dish_path(dish) %>
+          <h5 class="card-title">
+            <%= link_to dish.name, dish_path(dish) %> :<%= dish.price %>đ
+            <div class="address"><%= link_to dish.restaurant.name, restaurant_path(dish.restaurant) %>,
+            <%= dish.restaurant.address %></div>
+            <div class="dish-vote">
+              Dish's Vote:
+              <% if dish.votes.present? %>
+                  <%= dish.dish_vote %>
+              <% end %>
+            </div>
+            <div class="card-footer">
+                <%= button_to 'Add to Cart', line_items_path(:dish_id => dish), remote: :true %>
+            </div>
+          </h5>
+        </div>
+      </div>
     </div>
+  <%  end %>
+</div>
 <% else %>
 <table>
   <thead>

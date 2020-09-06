@@ -4,6 +4,7 @@ class User < ApplicationRecord
     has_many :orders
     has_many :restaurants
     has_many :dishes
+    has_many :votes
     validates :name, :presence => true, :uniqueness => true
     validates :password, :confirmation => true
     attr_accessor :password_confirmation

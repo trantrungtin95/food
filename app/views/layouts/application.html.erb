@@ -13,6 +13,7 @@
   <body id="store">
     <div align="left", id="banner">
         <a class="navbar-brand" href="/"><h1>RESTAURANT ONLINE:</h1></a>
+        </br>
     </div>
     <div align="right", id="home">
       <h4>
@@ -36,12 +37,12 @@
                 </p>
             <% end %>
           </div>
-          <div align="left">
-          <% if session[:user_id]%>
-          <h1>
-          Hello <%= User.find(session[:user_id]).name %>
-          </h1>
-          <% end %>
+          <div align="left", id="user-name">
+            <% if session[:user_id]%>
+              <h1>
+                Hello <%= User.find(session[:user_id]).name %>
+              </h1>
+            <% end %>
           </div>
           <div align="right", id="search">
             <%= form_tag(dishes_path, :method => "get") do %>

@@ -15,6 +15,30 @@
   <strong>Price:</strong>
   <%= @dish.price %>đ
 </p>
+
+<% if @dish.votes.present?%>
+  <p>
+    <strong>Dish's Vote:</strong>
+    <%= @dish.dish_vote %>
+  </p>
+<% end %>
+
+
+<% if @current_user.votes.where(dish_id: @dish.id).present? %>
+<p>
+  <strong>My Vote:</strong>
+  <%= @current_user.votes.where(dish_id: @dish.id).pluck(:rate).join(',') %>
+</p>
+<% end %>
+
+<p>
+  <%= form_tag(votes_path(dish_id: @dish.id)) do %>
+    <strong>Vote:</strong>
+    <%= select_tag :type, options_for_select(1..10) %>
+    <%= submit_tag("Vote")%>
+  <% end %>
+</p>
+
 <div class="card-footer">
   <%= button_to 'Add to Cart', line_items_path(:dish_id => @dish), remote: :true %>
 </div>

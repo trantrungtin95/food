@@ -1,6 +1,7 @@
 Rails.application.routes.draw do
   resources :orders
   resources :line_items
+  resources :votes
   resources :carts
   get 'admin/index'
   get 'sessions/new'

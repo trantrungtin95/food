@@ -29,6 +29,8 @@ gem 'jbuilder', '~> 2.7'
 gem "bootstrap-sass"
 gem 'bootstrap'
 gem 'will_paginate', '>= 3.0'
+gem 'will_paginate-bootstrap4'
+gem 'jquery-rails'
 gem 'bootsnap', '>= 1.4.2', require: false
 
 group :development, :test do
