@@ -1,0 +1,12 @@
+<form id="rating">
+    <% [5, 4, 3, 2, 1].each do |rating| %>
+      <input type="radio" id="star-<%= rating %>" name="rating" value="<%= rating %>" />
+      <label class = "full" for="star-<%= rating %>" title=<%= rating_title(rating.to_s) %>></label>
+      <% half_rating = rating.to_f - 0.5 %>
+      <input type="radio" id="star-<%= half_rating %>" name="rating" value="<%= half_rating %>" />
+      <label class="half" for="star-<%= half_rating %>" title="<%= rating_title(half_rating.to_s) %>"></label>
+    <%  end %> 
+   
+    <button type="submit">Vote</button>
+</form>
+
