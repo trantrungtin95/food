@@ -18,9 +18,9 @@
                         <%= dish.restaurant.address %>
                     </div>
                         <div class="dish-vote">
-                            Dish's Vote:
                             <% if dish.votes.present? %>
-                                <%= dish.dish_vote %>
+                                <% @dishvote = dish.rounding(dish.dish_vote)%>
+                                <%= render 'dishes/dishvote' %>
                             <% end %>
                         </div>
                         <div class="card-footer">

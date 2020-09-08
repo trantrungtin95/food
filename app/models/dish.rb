@@ -17,17 +17,35 @@ class Dish < ApplicationRecord
     # Ex:- scope :active, -> {where(:active => true)}
 
     def dish_vote
-        sprintf "%.2f" % ((self.votes.pluck(:rate).sum).fdiv(self.votes.pluck(:rate).size))
+        # TODO: self.votes.pluck(:rate) run 2 times --> assign variables
+        # Consider to account in db
+        # sprintf "%.2f" % ((self.votes.pluck(:rate).sum).fdiv(self.votes.pluck(:rate).size))
+        self.votes.average(:rate)
+    end
+
+    def rounding(x)
+        a = x - x.floor
+        if a < 0.25
+            x = x.floor
+        elsif 0.25 <= a && a < 0.75
+            a = 0.5
+            x = x.floor + a
+        else
+            x = x.floor + 1
+        end
+        x
     end
 
     private
   
     def check_if_has_line_item
         if line_items.empty?
-            return true
+            # return true
+            true
         else
             errors.add(:base, 'This dish has a LineItem')
-            return false
+            # return false
+            false
         end
     end
 end

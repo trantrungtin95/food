@@ -74,7 +74,7 @@ class DishesController < ApplicationController
   end
 
   def vote
-    @vote = Vote.create()
+    @vote = Vote.create(user_id: @current_user.id, dish_id: params[:id], rate: params[:rate])
   end
 
   private

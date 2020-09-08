@@ -30,37 +30,72 @@
 <% end %>
 <%= link_to 'Back', root_path %>
 </div>
-<hr/>
 
-<div class="menu"><h3>MENU</h3></div>
 
+
+<% if @restaurant.latitude.present? && @restaurant.longitude.present? %>
+  <div class="row">
+  <div style='width: 400px; padding-left: 480px;'>  
+    <div id="map" style='width: 400px; height: 200px;'>
+      <div id="lat" data-id='<%= @restaurant.latitude %>'></div>
+      <div id="lng" data-id='<%= @restaurant.longitude %>'></div>
+    </div>  
+  </div>  
+  </div>
+<% end %>
+
+<div class="menu"><h3>--MENU--</h3></div>
 <div class="row">
 
-        <% @dishes.each do |dish| %>
-                <div class="col-lg-4 col-md-6 mb-4">
-                    <div class="card h-100">
-                        <div class="card-body">
-                                <%= link_to image_tag(dish.image_url, class:"image-url"), dish_path(dish) %>
-                            <h4 class="card-title">
-                                <%= link_to dish.name, dish_path(dish) %> :<%= dish.price %>đ
-                                <div class="address"><%= link_to dish.restaurant.name, restaurant_path(dish.restaurant) %>,
-                                <%= dish.restaurant.address %></div>
-                                <div class="dish-vote">
-                                    Dish's Vote:
-                                    <% if dish.votes.present? %>
-                                        <%= dish.dish_vote %>
-                                    <% end %>
-                                </div>
-                                <div class="card-footer">
-                                    <%= button_to 'Add to Cart', line_items_path(:dish_id => dish), remote: :true %>
-                                </div>
-                            </h4>
-                        </div>
-                    </div>
-                </div>
-        <%  end %>
+  <% @dishes.each do |dish| %>
+    <div class="col-lg-4 col-md-6 mb-4">
+      <div class="card h-100">
+        <div class="card-body">
+          <%= link_to image_tag(dish.image_url, class:"image-url"), dish_path(dish) %>
+          <h4 class="card-title">
+            <%= link_to dish.name, dish_path(dish) %> :<%= dish.price %>đ
+            <div class="address"><%= link_to dish.restaurant.name, restaurant_path(dish.restaurant) %>,
+              <%= dish.restaurant.address %>
+            </div>
+            <div class="dish-vote">
+              <% if dish.votes.present? %>
+                  <% @dishvote = dish.rounding(dish.dish_vote)%>
+                  <%= render 'dishes/dishvote' %>
+              <% end %>
+            </div>
+            <div class="card-footer">
+              <%= button_to 'Add to Cart', line_items_path(:dish_id => dish), remote: :true %>
+            </div>
+          </h4>
+        </div>
+      </div>
     </div>
+  <%  end %>
+    </div>
+
+
 <% if @current_user.id == @restaurant.user.id%>
   <%= link_to 'New Dish', new_dish_path(@restaurant) %>
 <% end %>
 <p><%= will_paginate @dishes %></p>
+
+
+
+<script>
+  // Initialize and add the map
+  function initMap() {
+    // The location of Uluru
+    var lat = $('#lat').data('id')
+
+    var lng = $('#lng').data('id')
+    var uluru = {lat, lng};
+    // The map, centered at Uluru
+    var map = new google.maps.Map(
+      document.getElementById('map'), {zoom: 15, center: uluru});
+    // The marker, positioned at Uluru
+    var marker = new google.maps.Marker({position: uluru, map: map});
+  }
+</script>
+
+    <script async defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCzs2ja1HKuzIFiccxeB-SFpqOg9WMUk3g&callback=initMap"
+      type="text/javascript"></script>

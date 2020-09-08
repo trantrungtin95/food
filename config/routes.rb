@@ -1,14 +1,15 @@
 Rails.application.routes.draw do
   resources :orders
   resources :line_items
-  resources :votes
   resources :carts
   get 'admin/index'
   get 'sessions/new'
   get 'sessions/create'
   get 'sessions/destroy'
   resources :restaurants 
-  resources :dishes
+  resources :dishes do
+    post :vote, on: :member
+  end
 
   get 'store/index'
   root :to => 'store#index'
