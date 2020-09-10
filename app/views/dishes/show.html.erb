@@ -17,21 +17,19 @@
   <%= @dish.price %>đ
 </p>
 
-<div class='row'>
-  <% if @dish.votes.present?%>
-    <% @dishvote = @dish.rounding(@dish.dish_vote) %>
-    <%= render 'dishvote'%>
-  <% end %>
-</div>
+<p>
+<% if @dish.votes.present? %>
+  <strong>Dish's Vote:</strong>
+  <div class="dish-vote" data-dish-vote='<%= @dish.rounding(@dish.dish_vote) %>'></div>
+<% end %>
+</p>
 
-
-<div class='row'>
-  <% if @dish.votes.where(user_id: @current_user.id).present? %> 
-    <%= render 'myrating'%>
+<% if @dish.rating(@current_user).present? %>
+  <strong>My Vote:</strong>
+  <div class="my-rating" data-rating='<%= @dish.rating(@current_user).rate%>'></div>
   <% else %>
-    <%= render 'rating'%>
-  <% end %>
-</div>
+  <div class="my-rating"></div>
+<% end %>
 
 
 
@@ -42,21 +40,38 @@
   <% if @current_user.id == @dish.user_id%>
     <%= link_to 'Edit', edit_dish_path(@dish) %> |
   <% end %>
-</div>
-<div>
   <%= link_to 'Back', dishes_path %>
 </div>
 
 
 <script>
-  var form = document.getElementById('rating');
-  form.addEventListener('submit', event => {
-    var formData = new FormData(event.target);
-    var rating = formData.get('rating');
-    var dishId = $('#dish-id').data('id');
-    $.post(`/dishes/${dishId}/vote`, { rate: rating }, function(data) {
-      console.log(rating);
+var rating = $(".my-rating").data("rating")
+var readonly = false
+
+if (rating > 0) { 
+  readonly = true 
+}
+$(".my-rating").starRating({
+  initialRating: 0,
+  strokeColor: '#894A00',
+  strokeWidth: 10,
+  readOnly: readonly,
+  starSize: 25,
+  callback: function(currentRating, $el){
+     var dishId = $('#dish-id').data('id');
+    $.post(`/dishes/${dishId}/vote`, { rate: currentRating}, function(data) {
+      console.log(currentRating);
     } )
-    event.preventDefault();
-  });
+  }
+});
+
+var dishvote = $(".dish-vote").data("dish-vote")
+$(".dish-vote").starRating({
+  initialRating: dishvote,
+  strokeColor: '#894A00',
+  strokeWidth: 10,
+  readOnly: true,
+  starSize: 25,
+});
+  
 </script>

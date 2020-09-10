@@ -17,12 +17,9 @@
                     <div class="address"><%= link_to dish.restaurant.name, restaurant_path(dish.restaurant) %>,
                         <%= dish.restaurant.address %>
                     </div>
-                        <div class="dish-vote">
-                            <% if dish.votes.present? %>
-                                <% @dishvote = dish.rounding(dish.dish_vote)%>
-                                <%= render 'dishes/dishvote' %>
-                            <% end %>
-                        </div>
+                        <% if dish.votes.present? %>
+                            <div class="dish-vote" data-dish-vote='<%= dish.rounding(dish.dish_vote) %>'></div>
+                        <% end %>
                         <div class="card-footer">
                             <%= button_to 'Add to Cart', line_items_path(:dish_id => dish), remote: :true %>
                         </div>
@@ -33,6 +30,17 @@
     <%  end %>
     </div>
     <p><%= will_paginate @dishes %></p>
+
+<script>
+    var dishvote = $(".dish-vote").data("dish-vote")
+    $(".dish-vote").starRating({
+    initialRating: dishvote,
+    strokeColor: '#894A00',
+    strokeWidth: 10,
+    readOnly: true,
+    starSize: 25,
+    });
+</script>
 
 
 

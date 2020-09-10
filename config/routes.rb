@@ -6,7 +6,9 @@ Rails.application.routes.draw do
   get 'sessions/new'
   get 'sessions/create'
   get 'sessions/destroy'
-  resources :restaurants 
+  resources :restaurants do
+    get :near_by, on: :collection
+  end 
   resources :dishes do
     post :vote, on: :member
   end

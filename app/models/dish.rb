@@ -36,6 +36,10 @@ class Dish < ApplicationRecord
         x
     end
 
+    def rating(user)
+        self.votes.where(user_id: user.id).first
+    end
+
     private
   
     def check_if_has_line_item

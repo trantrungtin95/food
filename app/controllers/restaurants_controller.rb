@@ -71,6 +71,11 @@ class RestaurantsController < ApplicationController
     end
   end
 
+  def near_by
+    restaurants = Restaurant.near([params[:latitude],params[:longitude]], 200)
+    render json: restaurants.to_json(only: [:name, :latitude, :longitude])
+  end
+
   private
     # Use callbacks to share common setup or constraints between actions.
     def set_restaurant
