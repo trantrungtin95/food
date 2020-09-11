@@ -7,6 +7,7 @@ Rails.application.routes.draw do
   get 'sessions/create'
   get 'sessions/destroy'
   resources :restaurants do
+    resources :comments
     get :near_by, on: :collection
     post :resvote, on: :member
   end 

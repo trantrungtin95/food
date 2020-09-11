@@ -27,6 +27,7 @@ gem 'jbuilder', '~> 2.7'
 # gem 'image_processing', '~> 1.2'
 
 # Reduces boot times through caching; required in config/boot.rb
+gem 'simple_form'
 gem "bootstrap-sass"
 gem 'bootstrap'
 gem 'will_paginate', '>= 3.0'

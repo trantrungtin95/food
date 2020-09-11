@@ -6,6 +6,7 @@ class User < ApplicationRecord
     has_many :dishes
     has_many :votes
     has_many :resvotes
+    has_many :comments
     validates :name, :presence => true, :uniqueness => true
     validates :password, :confirmation => true
     attr_accessor :password_confirmation

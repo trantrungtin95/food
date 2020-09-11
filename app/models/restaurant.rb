@@ -1,5 +1,6 @@
 class Restaurant < ApplicationRecord
     belongs_to :user
+    has_many :comments
     has_many :resvotes
     has_many :dishes, :dependent => :destroy
 
@@ -27,4 +28,9 @@ class Restaurant < ApplicationRecord
     def resvoted(user)
         self.resvotes.where(user_id: user.id).first
     end
+
+    def root_comments
+        comments.where(comment_id: nil)
+    end
+    
 end
