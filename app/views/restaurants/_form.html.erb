@@ -11,7 +11,7 @@
     </div>
   <% end %>
 
-  <div class="field">
+  <div class="row field">
     <%= form.label :name %>
     <%= form.text_field :name %>
   </div>
@@ -19,28 +19,25 @@
   <div>
    <%= form.hidden_field :user_id, value: @current_user.id %>
   </div>
-
-  <div class="field">
+  <div class="row field">
     <%= form.label :address %>
     <%= form.text_field :address %>
   </div>
-
-  <div class="field">
+  <div class="row field">
     <%= form.label :open_time %>
     <%= form.time_field :open_time %>
   </div>
-
-  <div class="field">
+  <div class="row field">
     <%= form.label :close_time %>
     <%= form.time_field :close_time %>
   </div>
 
-  <div class="field">
+  <div class="row field">
     <%= form.label :latitude %>
     <%= form.text_field :latitude %>
   </div>
 
-  <div class="field">
+  <div class="row field">
     <%= form.label :longitude %>
     <%= form.text_field :longitude %>
   </div>

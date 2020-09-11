@@ -60,12 +60,14 @@
 
 <p><%= will_paginate @dishes %></p>
 <script>
-  var dishvote = $(".dish-vote").data("dish-vote")
-  $(".dish-vote").starRating({
-    initialRating: dishvote,
-    strokeColor: '#894A00',
-    strokeWidth: 10,
-    readOnly: true,
-    starSize: 25,
-  });
+  $('div.dish-vote').each(function () {
+        var dishvote = $(this).data("dish-vote")
+        $(this).starRating({
+            initialRating: dishvote,
+            strokeColor: '#894A00',
+            strokeWidth: 10,
+            readOnly: true,
+            starSize: 25,
+        });
+    })
 </script>
