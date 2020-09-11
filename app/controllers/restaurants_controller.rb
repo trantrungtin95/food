@@ -1,4 +1,5 @@
 class RestaurantsController < ApplicationController
+  skip_before_action :verify_authenticity_token
   before_action :set_restaurant, only: [:show, :edit, :update, :destroy]
 
   # GET /restaurants
@@ -74,6 +75,10 @@ class RestaurantsController < ApplicationController
   def near_by
     restaurants = Restaurant.near([params[:latitude],params[:longitude]], 200)
     render json: restaurants.to_json(only: [:name, :latitude, :longitude])
+  end
+
+  def resvote
+    @resvote = Resvote.create(user_id: @current_user.id, restaurant_id: params[:id], rating: params[:rate])
   end
 
   private

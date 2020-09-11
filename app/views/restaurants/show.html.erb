@@ -1,34 +1,50 @@
 <p id="notice"><%= notice %></p>
+<div id='restaurant-id' data-id='<%= @restaurant.id %>'>
 <hr/>
 <div class='show-restaurant'>
-<p>
-  <strong><h1><%= @restaurant.name %></h1></strong>
-</p>
+  <p>
+    <strong><h1><%= @restaurant.name %></h1></strong>
+  </p>
 
-<p>
-  <strong>Owner:</strong>
-  <%= @restaurant.user.name %>
-</p>
+  <p>
+    <strong>Owner:</strong>
+    <%= @restaurant.user.name %>
+  </p>
 
-<p>
-  <strong>Address:</strong>
-  <%= @restaurant.address %>
-</p>
+  <p>
+    <strong>Address:</strong>
+    <%= @restaurant.address %>
+  </p>
 
-<p>
-  <strong>Open time:</strong>
-  <%= @restaurant.open_time.strftime("%I:%M %p") %>
-</p>
+  <p>
+    <strong>Open time:</strong>
+    <%= @restaurant.open_time.strftime("%I:%M %p") %>
+  </p>
 
-<p>
-  <strong>Close time:</strong>
-  <%= @restaurant.close_time.strftime("%I:%M %p") %>
-</p>
-<% if @current_user.id == @restaurant.user.id %>
-  <%= link_to 'Edit', edit_restaurant_path(@restaurant) %> |
-  <%= link_to 'Destroy', @restaurant, method: :delete, data: { confirm: 'Are you sure?' } %> |
-<% end %>
-<%= link_to 'Back', root_path %>
+  <p>
+    <strong>Close time:</strong>
+    <%= @restaurant.close_time.strftime("%I:%M %p") %>
+  </p>
+
+  <% if @restaurant.resvotes.present? %>
+    <div class="restaurant-vote" data-restaurant-vote='<%= @restaurant.resvote_rounding(@restaurant.restaurant_vote) %>'>
+    <strong>Restaurant's Vote:</strong>
+    </div>
+  <% end %>
+
+  <% if @restaurant.resvoted(@current_user).present? %>
+    <div class="my-rating-res" data-rating='<%= @restaurant.resvoted(@current_user).rating %>'>
+    <strong>My Vote:</strong>
+    </div>
+    <% else %>
+    <div class="my-rating-res"></div>
+  <% end %>
+
+  <% if @current_user.id == @restaurant.user.id %>
+    <%= link_to 'Edit', edit_restaurant_path(@restaurant) %> |
+    <%= link_to 'Destroy', @restaurant, method: :delete, data: { confirm: 'Are you sure?' } %> |
+  <% end %>
+  <%= link_to 'Back', root_path %>
 </div>
 
 
@@ -103,7 +119,34 @@
             readOnly: true,
             starSize: 25,
         });
-    })
+    });
+  var rating = $(".my-rating-res").data("rating")
+  var readonly = false
+
+  if (rating > 0) { 
+    readonly = true 
+  }
+  $(".my-rating-res").starRating({
+    initialRating: 0,
+    strokeColor: '#894A00',
+    strokeWidth: 10,
+    readOnly: readonly,
+    starSize: 25,
+    callback: function(currentRating, $el){
+      var restaurantId = $('#restaurant-id').data('id');
+      $.post(`/restaurants/${restaurantId}/resvote`, { rate: currentRating}, function(data) {
+        console.log(currentRating);
+      } )
+    }
+  });
+  var restaurantvote = $(".restaurant-vote").data("restaurant-vote")
+  $(".restaurant-vote").starRating({
+    initialRating: restaurantvote,
+    strokeColor: '#894A00',
+    strokeWidth: 10,
+    readOnly: true,
+    starSize: 25,
+  });
 </script>
 
 <script async defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCzs2ja1HKuzIFiccxeB-SFpqOg9WMUk3g&callback=initMap"
