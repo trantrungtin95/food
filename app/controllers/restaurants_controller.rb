@@ -74,13 +74,15 @@ class RestaurantsController < ApplicationController
 
   def search
     # address --> lattitude, longitude (geocoding)
-    String results = Geocoder.search(params[:query])
+    results = Geocoder.search(params[:query])
     @latitude = results.first.coordinates[0]
     @longitude = results.first.coordinates[1]
+    # TODO: find restaurants near by
+    @restaurants = Restaurant.near([@latitude, @longitude], 200)
   end
 
   def near_by
-    restaurants = Restaurant.near([params[:latitude],params[:longitude]], 200)
+    restaurants = Restaurant.near([params[:latitude],params[:longitude]], 5)
     render json: restaurants.to_json(only: [:name, :latitude, :longitude])
   end
 

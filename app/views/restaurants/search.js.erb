@@ -1,25 +1,16 @@
-    window.lat = <%= @latitude %>
-    window.lng = <%= @longitude %>
-    $.get(`/restaurants/near_by`, { latitude: window.lat, longitude: window.lng }, function(data) {
-        window.restaurants = data
-        initMap()
-        console.log(window.restaurants);
-    } );
-    function initMap() {
-        var lat = window.lat
-        var lng = window.lng
-        // The location of Uluru
-        var uluru = {lat, lng};
-        var map = new google.maps.Map(document.getElementById('map'), {zoom: 11, center: uluru});
-        var marker = new google.maps.Marker({position: uluru, map: map});
-        $.each(window.restaurants, function(a,restaurant) {
-        var resmarker = new google.maps.Marker({
-        position: {
-            lat: restaurant.latitude, 
-            lng: restaurant.longitude
-            }, 
-        label: restaurant.name, 
-        map: map
-        });
-        })
-    }
+    var point = { lat: <%= @latitude %>, lng: <%= @longitude %> };
+    
+    // hide old markers
+    // 
+    $.each(window.markers, function(marker) {
+        market.setMap(null);
+    });
+    // functional programming
+    
+    map.setCenter(point);
+
+    <% @restaurants.each do |restaurant| %>
+      var restaurantPoint = {lat: <%= restaurant.latitude %>, lng: <%= restaurant.longitude %> };
+      new google.maps.Marker({position: restaurantPoint, map: map});
+    <% end %>
+    
