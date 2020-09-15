@@ -61,6 +61,8 @@
 
 
 var x = document.getElementById("demo");
+window.markers = [];
+
 function getLocation() {
   if (navigator.geolocation) {
     navigator.geolocation.getCurrentPosition(showPosition);
@@ -86,7 +88,7 @@ function initMap() {
     var lat = window.latitude
     var lng = window.longitude
     var uluru = {lat, lng};
-    var map = new google.maps.Map(document.getElementById('map'), {zoom: 11, center: uluru});
+    window.map = new google.maps.Map(document.getElementById('map'), {zoom: 17, center: uluru});
     var marker = new google.maps.Marker({position: uluru, map: map});
     $.each(window.restaurants, function(a,restaurant) {
     var resmarker = new google.maps.Marker({
@@ -97,6 +99,8 @@ function initMap() {
       label: restaurant.name, 
       map: map
       });
+
+      window.markers.append(resmarker);
     })
   }
 
