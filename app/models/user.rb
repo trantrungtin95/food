@@ -7,6 +7,7 @@ class User < ApplicationRecord
     has_many :votes
     has_many :resvotes
     has_many :comments
+    belongs_to :shipper
     validates :name, :presence => true, :uniqueness => true
     validates :password, :confirmation => true
     attr_accessor :password_confirmation
@@ -42,6 +43,10 @@ class User < ApplicationRecord
         if User.count.zero?
             raise "Can't delete last user"
         end
+    end
+
+    def shipper_by(user)
+        Shipper.where(user_id: user.id).present?
     end
 
     private

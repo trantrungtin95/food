@@ -18,7 +18,11 @@ Rails.application.routes.draw do
 
   get 'store/index'
   root :to => 'store#index'
-  resources :users
+  resources :users do
+    get :shipper, on: :member
+    get :unshipper, on: :member
+    get :my_orders, on: :collection
+  end
 
   get 'admin' => 'admin#index'
   

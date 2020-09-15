@@ -74,6 +74,17 @@ class UsersController < ApplicationController
     end
   end
 
+  def shipper
+    shipper=Shipper.create(user_id: params[:id])
+    redirect_to user_path(@current_user)
+  end
+
+  def unshipper
+    shipper=Shipper.where(user_id: params[:id])
+    shipper.destroy_all
+    redirect_to user_path(@current_user)
+  end
+
   private
     # Use callbacks to share common setup or constraints between actions.
     def set_user

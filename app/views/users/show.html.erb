@@ -7,10 +7,22 @@
 
 <p>
   <strong>Status:</strong>
-  <%= @user.status %>
+  <%= @user.status %>,
+  <% if @current_user.shipper_by(@current_user) %>
+    Shipper.
+  <% end %>
+</p>
+<p>
+  <strong>
+    <% if @current_user.shipper_by(@current_user) %>
+      <%= link_to "Unshipper", unshipper_user_path(@current_user)%>
+    <% else %>
+      <%= link_to "Registered as a Shipper", shipper_user_path(@current_user) %>
+    <% end %>
+  </strong>
 </p>
 <% if @current_user.id == @user.id%>
-  <p><%= link_to 'My Orders', orders_path(@user) %></p>
+  <p><%= link_to 'My Orders', my_orders_users_path(@current_user) %></p>
   <%= link_to 'Edit', edit_user_path(@user) %> |
 <% end %>
 <%= link_to 'Back', root_path %>
