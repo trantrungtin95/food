@@ -26,6 +26,7 @@ class CommentsController < ApplicationController
   def create
     @comment = Comment.new(comment_params)
     @comment.restaurant_id = params[:restaurant_id]
+    @parent_comment = Comment.find_by(id: comment_params[:comment_id])
     @comment.save
   end
 
