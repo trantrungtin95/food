@@ -32,5 +32,11 @@ class Restaurant < ApplicationRecord
     def root_comments
         comments.where(comment_id: nil)
     end
-    
+
+
+    def self.json_near_by(latitude, longitude)
+      restaurants = Restaurant.near([latitude,longitude], 200)
+      restaurants.to_json(only: [:name, :latitude, :longitude])
+    end
+
 end

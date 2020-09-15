@@ -8,6 +8,7 @@ Rails.application.routes.draw do
   get 'sessions/destroy'
   resources :restaurants do
     resources :comments
+    get :search, on: :collection
     get :near_by, on: :collection
     post :resvote, on: :member
   end 

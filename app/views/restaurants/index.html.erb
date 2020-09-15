@@ -43,6 +43,12 @@
 <p><%= will_paginate @restaurants %></p>
 
 <div id='demo'></div>
+
+<%= form_tag('/restaurants/search', :method => "get", class: 'form-inline', remote: true) do %>
+<%= text_field_tag 'query', '', class: 'form-control' %>
+<%= submit_tag 'Search', class: 'btn btn-success' %>
+<% end %>
+
 <div class="row">
   <div style='width: 400px; padding-left: 350px;'>  
     <div id="map" style='width: 800px; height: 600px;'>
@@ -74,17 +80,14 @@ function showPosition(position) {
         console.log(window.restaurants);
     } );
 } 
+
 getLocation();
 function initMap() {
     var lat = window.latitude
     var lng = window.longitude
-    // The location of Uluru
     var uluru = {lat, lng};
-    // The map, centered at Uluru
     var map = new google.maps.Map(document.getElementById('map'), {zoom: 11, center: uluru});
-    // The marker, positioned at Uluru
     var marker = new google.maps.Marker({position: uluru, map: map});
-    // var resloca = {10.7700962, 106.6621104}
     $.each(window.restaurants, function(a,restaurant) {
     var resmarker = new google.maps.Marker({
       position: {
