@@ -1,16 +1,15 @@
     var point = { lat: <%= @latitude %>, lng: <%= @longitude %> };
     
-    // hide old markers
-    // 
-    $.each(window.markers, function(marker) {
-        market.setMap(null);
+    $.each(window.markers, function(a, marker) {
+        marker.setMap(null);
     });
-    // functional programming
     
-    map.setCenter(point);
-
+    window.map.setCenter(point);
     <% @restaurants.each do |restaurant| %>
       var restaurantPoint = {lat: <%= restaurant.latitude %>, lng: <%= restaurant.longitude %> };
-      new google.maps.Marker({position: restaurantPoint, map: map});
+      var newresmarker = new google.maps.Marker({position: restaurantPoint,
+                                                 label: "<%= restaurant.name%>", 
+                                                 map: window.map});
+      window.markers.push(newresmarker)
     <% end %>
     

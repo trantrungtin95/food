@@ -78,7 +78,7 @@ class RestaurantsController < ApplicationController
     @latitude = results.first.coordinates[0]
     @longitude = results.first.coordinates[1]
     # TODO: find restaurants near by
-    @restaurants = Restaurant.near([@latitude, @longitude], 200)
+    @restaurants = Restaurant.near([@latitude, @longitude], 5)
   end
 
   def near_by
