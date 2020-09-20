@@ -49,6 +49,18 @@ class User < ApplicationRecord
         Shipper.where(user_id: user.id).present?
     end
 
+    def received(user, order)
+        shipper = Shipper.where(user_id: user.id).first
+        ShipperOrder.where(shipper_id: shipper.id, order_id: order.id).present?
+    end 
+
+    def orders_received
+        if Shipper.where(user_id: id).present? 
+            shipper_id = Shipper.where(user_id: id).first.id
+            orders_received = ShipperOrder.where(shipper_id: shipper_id).present?
+        end
+    end
+
     private
     def password_must_be_present 
         if hashed_password.present? == false

@@ -79,6 +79,37 @@ class UsersController < ApplicationController
     redirect_to user_path(@current_user)
   end
 
+  def receive_order
+    user = User.find(params[:id])
+    shipper = Shipper.where(user_id: user.id).first
+    if ShipperOrder.where(shipper_id: shipper.id).present?
+      redirect_to orders_path, notice: 'You have an incomplete order!'
+    else
+      shipper_order = ShipperOrder.create(shipper_id: shipper.id, order_id: params[:order_id] )
+      order = Order.find(params[:order_id])
+      order.update(status: 'Processing')
+      redirect_to orders_path
+      ReceiveOrderMailer.received_order(order,user).deliver
+    end
+  end
+  
+  def destroy_order_received
+    user = User.find(params[:id])
+    shipperorder = ShipperOrder.where(order_id: params[:order_id]).first
+    order = shipperorder.order
+    order.update(status: "Unprocessed")
+    shipperorder.destroy
+    redirect_to @current_user
+    ReceiveOrderMailer.cancel_received_order(order,user).deliver
+  end
+
+  def orders_received
+    user = User.find(params[:format])
+    shipper = Shipper.where(user_id: user.id).first
+    @shipper_orders = ShipperOrder.where(shipper_id: shipper.id)
+    @orders_received = @shipper_orders.map(&:order)
+  end
+
   def unshipper
     shipper=Shipper.where(user_id: params[:id])
     shipper.destroy_all

@@ -17,16 +17,19 @@
 
   <tbody>
     <% @orders.each do |order| %>
+      <% if ShipperOrder.where(order_id: order.id).present? %>
+      <% else %>
       <tr>
         <td><%= order.name %></td>
         <td><%= order.address %></td>
         <td><%= order.email %></td>
         <td><%= order.pay_type %></td>
         <td><%= time_ago_in_words(order.updated_at) %> ago</td>
-        <td>Status</td>
+        <td><%= order.status %></td>
         <td><%= link_to 'Show',line_items_path(order) %></td>
-        <td><%= link_to 'Receive Order' %></td>
+        <td><%= link_to 'Receive Order', receive_order_user_path(@current_user, :order_id => order.id) %></td>
       </tr>
+      <% end %>
     <% end %>
   </tbody>
 </table>

@@ -5,7 +5,11 @@ class OrdersController < ApplicationController
   # GET /orders
   # GET /orders.json
   def index
-    @orders = Order.all
+    if @current_user.shipper_by(@current_user)
+      @orders = Order.all
+    else
+      redirect_to root_path
+    end
   end
 
   # GET /orders/1
@@ -66,7 +70,7 @@ class OrdersController < ApplicationController
   def destroy
     @order.destroy
     respond_to do |format|
-      format.html { redirect_to orders_url, notice: 'Order was successfully destroyed.' }
+      format.html { redirect_to @current_user, notice: 'Order was successfully destroyed.' }
       format.json { head :no_content }
     end
   end
@@ -79,6 +83,6 @@ class OrdersController < ApplicationController
 
     # Only allow a list of trusted parameters through.
     def order_params
-      params.require(:order).permit(:name, :address, :email, :pay_type, :user_id)
+      params.require(:order).permit(:name, :address, :email, :pay_type, :user_id, :status )
     end
 end

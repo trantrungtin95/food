@@ -21,6 +21,9 @@
     <% end %>
   </strong>
 </p>
+<% if @current_user.orders_received %>
+  <p><%= link_to 'Orders received', orders_received_users_path(@current_user)%></p>
+<% end %>
 <% if @current_user.id == @user.id%>
   <p><%= link_to 'My Orders', my_orders_users_path(@current_user) %></p>
   <%= link_to 'Edit', edit_user_path(@user) %> |
