@@ -9,7 +9,7 @@ require("@rails/activestorage").start()
 require("channels")
 require("jquery.star-rating-svg.min")
 
-import('styles/application.css');
+import('../styles/application.css');
 
 
 // Uncomment to copy all static images under ../images to the output folder and reference
