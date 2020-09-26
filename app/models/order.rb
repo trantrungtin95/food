@@ -13,4 +13,9 @@ class Order < ApplicationRecord
             line_items << item
         end
     end
+
+    def location_order(address)
+        results = Geocoder.search(address).first.coordinates
+      end
+    
 end

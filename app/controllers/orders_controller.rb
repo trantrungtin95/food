@@ -5,7 +5,9 @@ class OrdersController < ApplicationController
   # GET /orders
   # GET /orders.json
   def index
+    @shipper = Shipper.where(user_id: current_user.id).first
     if @current_user.shipper_by(@current_user)
+      
       @orders = Order.all
     else
       redirect_to root_path
@@ -73,6 +75,13 @@ class OrdersController < ApplicationController
       format.html { redirect_to @current_user, notice: 'Order was successfully destroyed.' }
       format.json { head :no_content }
     end
+  end
+
+  def completed
+    @order = Order.find(params[:id])
+    @order.update(status: 'Processed')
+    ShipperOrder.where(order_id: @order.id).first.update(status: "Processed")
+    redirect_to @order
   end
 
   private

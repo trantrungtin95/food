@@ -75,22 +75,24 @@ class UsersController < ApplicationController
   end
 
   def shipper
-    shipper=Shipper.create(user_id: params[:id])
+    shipper=Shipper.create(user_id: @current_user.id, name: @current_user.name)
+    redirect_to user_path(@current_user)
+  end
+  
+  def unshipper
+    shipper=Shipper.where(user_id: @current_user.id)
+    shipper.destroy_all
     redirect_to user_path(@current_user)
   end
 
   def receive_order
-    user = User.find(params[:id])
-    shipper = Shipper.where(user_id: user.id).first
-    if ShipperOrder.where(shipper_id: shipper.id).present?
-      redirect_to orders_path, notice: 'You have an incomplete order!'
-    else
-      shipper_order = ShipperOrder.create(shipper_id: shipper.id, order_id: params[:order_id] )
-      order = Order.find(params[:order_id])
-      order.update(status: 'Processing')
-      redirect_to orders_path
-      ReceiveOrderMailer.received_order(order,user).deliver
-    end
+    # attribute (column): role. User.fi
+    @shipper = Shipper.where(user_id: @current_user.id).first
+    shipper_order = ShipperOrder.create(shipper_id: @shipper.id, order_id: params[:order_id] )
+    @order = Order.find(params[:order_id])
+    @order.update(status: 'Processing')
+    redirect_to @order
+    ReceiveOrderMailer.received_order(@order, @current_user).deliver
   end
   
   def destroy_order_received
@@ -103,6 +105,7 @@ class UsersController < ApplicationController
     ReceiveOrderMailer.cancel_received_order(order,user).deliver
   end
 
+
   def orders_received
     user = User.find(params[:format])
     shipper = Shipper.where(user_id: user.id).first
@@ -110,10 +113,21 @@ class UsersController < ApplicationController
     @orders_received = @shipper_orders.map(&:order)
   end
 
-  def unshipper
-    shipper=Shipper.where(user_id: params[:id])
-    shipper.destroy_all
-    redirect_to user_path(@current_user)
+
+  def shipper_location
+    if Shipper.where(user_id: @current_user.id).present?
+      shipper = Shipper.where(user_id: @current_user.id).first
+      shipper.update(latitude: params[:latitude])
+      shipper.update(longitude: params[:longitude])
+    end
+  end
+
+  def get_shipper_location
+    if params[:shipper_id].blank?
+    else
+    shipper = Shipper.find(params[:shipper_id])
+    render json: shipper.to_json(only: [:name, :latitude, :longitude])
+    end
   end
 
   private

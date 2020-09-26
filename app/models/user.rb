@@ -7,7 +7,7 @@ class User < ApplicationRecord
     has_many :votes
     has_many :resvotes
     has_many :comments
-    belongs_to :shipper
+    belongs_to :shipper, optional: true, :dependent => :destroy
     validates :name, :presence => true, :uniqueness => true
     validates :password, :confirmation => true
     attr_accessor :password_confirmation
@@ -58,6 +58,13 @@ class User < ApplicationRecord
         if Shipper.where(user_id: id).present? 
             shipper_id = Shipper.where(user_id: id).first.id
             orders_received = ShipperOrder.where(shipper_id: shipper_id).present?
+        end
+    end
+
+    def uncompleted_order
+        if Shipper.where(user_id: id).present? 
+            shipper_id = Shipper.where(user_id: id).first.id
+            orders_received = ShipperOrder.where(shipper_id: shipper_id, status: "Processing").present?
         end
     end
 

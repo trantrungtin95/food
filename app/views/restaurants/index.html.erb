@@ -29,7 +29,7 @@
             <div class="restaurant-vote" data-restaurant-vote='<%= restaurant.resvote_rounding(restaurant.restaurant_vote) %>'></div>
           <% end %>
         </td>
-        <% if @current_user.id == restaurant.user_id%>
+        <% if @current_user.id == restaurant.user_id %>
           <td><%= link_to 'Edit', edit_restaurant_path(restaurant) %></td>
           <td><%= link_to 'Destroy', restaurant, method: :delete, data: { confirm: 'Are you sure?' } %></td>
         <% end %>
@@ -54,7 +54,7 @@
     <div id="map" style='width: 800px; height: 600px;'>
     </div>  
   </div>  
-  </div>
+</div>
 
 
 <script>

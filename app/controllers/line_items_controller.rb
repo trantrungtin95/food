@@ -3,9 +3,9 @@ class LineItemsController < ApplicationController
   # GET /line_items
   # GET /line_items.json
   def index
-    @line_items = LineItem.where(order_id: params[:format])
+    @order = Order.find(params[:format])
+    @line_items = LineItem.where(order_id: @order.id)
   end
-
   # GET /line_items/1
   # GET /line_items/1.json
   def show

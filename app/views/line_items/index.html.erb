@@ -2,6 +2,13 @@
 
 <h1>Line Items</h1>
 
+<strong>Mã đơn hàng: <%= @order.id %></strong>
+
+<p><strong>Name: </strong><%= @order.name %></p>
+<p><strong>Address: </strong><%= @order.address %></p>
+<p><strong>Email: </strong><%= @order.email %></p>
+<p><strong>Pay_type: </strong><%= @order.pay_type %></p>
+
 <table>
   <thead>
     <tr>
@@ -26,5 +33,93 @@
   </tbody>
 </table>
 
-<br>
+<% if @order.status == "Processing" %>
+  <%= button_to 'Completed Order!', completed_order_path(@order) %>
+  <% elsif @order.status == "Unprocessed" %>
+    <% if @current_user.uncompleted_order %>
+    <% else %>
+      <%= button_to 'Receive Order', receive_order_user_path(@current_user, :order_id => @order.id) %>
+    <% end %>
+<% end %>
 
+<br>
+<div id='demo'></div>
+
+<% if @order.status == "Processing" %>
+  <% @shipper=ShipperOrder.where(order_id: @order.id).first.shipper %>
+  <div id='shipper' data-shipper='<%= @shipper.id %>'></div>
+<% elsif @current_user.shipper_by(@current_user) && @order.status == "Unprocessed" %>
+  <% @shipper = Shipper.where(user_id: @current_user.id).first %>
+  <div id='shipper' data-shipper='<%= @shipper.id %>'></div>
+<% end %>
+
+<div id='location-order' data-id='<%= @order.location_order(@order.address) %>'></div>
+<div class="row">
+  <div style='width: 400px; padding-left: 350px;'>  
+    <div id="map" style='width: 800px; height: 600px;'>
+    </div>  
+  </div>  
+</div>
+
+
+<script>
+
+var address = $('#location-order').data('id');
+
+var x = document.getElementById("demo");
+
+function getLocation() {
+  if (navigator.geolocation) {
+    navigator.geolocation.getCurrentPosition(showPosition);
+  } else {
+    x.innerHTML = "Geolocation is not supported by this browser.";
+  }
+};
+
+function showPosition(position) {
+  window.latitude = position.coords.latitude,
+  window.longitude = position.coords.longitude,
+  $.get(`/users/shipper_location`, { latitude: window.latitude, longitude: window.longitude }, function(data) {
+        console.log();
+        setTimeout(getLocation, 2000);
+    } );
+}; 
+getLocation();
+var shipper_id = $('#shipper').data('shipper')
+function getLocationShipper() {
+  $.get(`/users/get_shipper_location`, { shipper_id: shipper_id }, function(data) {
+        window.shipper = data;
+        window.shipper_marker.setMap(null);
+        window.shipper_marker = new google.maps.Marker({
+          position: {
+            lat: window.shipper.latitude, 
+            lng: window.shipper.longitude
+            }, 
+          label: window.shipper.name, 
+          map: window.map
+          });
+        console.log(window.shipper);
+        setTimeout(getLocationShipper, 2000);
+    } );
+};
+getLocationShipper();
+function initMap() {
+    var lat = address[0];
+    var lng = address[1];
+    var uluru = {lat, lng};
+    window.map = new google.maps.Map(document.getElementById('map'), {zoom: 12, center: uluru});
+    var marker = new google.maps.Marker({position: uluru, map: window.map});
+    window.shipper_marker = new google.maps.Marker({
+      position: {
+        lat: window.shipper.latitude, 
+        lng: window.shipper.longitude
+        }, 
+      label: window.shipper.name, 
+      map: window.map
+      });
+  };
+setTimeout(initMap, 1000);
+</script>
+
+<script async defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCzs2ja1HKuzIFiccxeB-SFpqOg9WMUk3g&callback=initMap"
+type="text/javascript"></script>

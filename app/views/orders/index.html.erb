@@ -1,5 +1,6 @@
 <p id="notice"><%= notice %></p>
 
+<!-- Only for users who are shippers -->
 <h1>Orders List</h1>
 <hr/>
 <table>
@@ -17,8 +18,7 @@
 
   <tbody>
     <% @orders.each do |order| %>
-      <% if ShipperOrder.where(order_id: order.id).present? %>
-      <% else %>
+      <% if order.status == "Unprocessed" %>
       <tr>
         <td><%= order.name %></td>
         <td><%= order.address %></td>
@@ -27,7 +27,8 @@
         <td><%= time_ago_in_words(order.updated_at) %> ago</td>
         <td><%= order.status %></td>
         <td><%= link_to 'Show',line_items_path(order) %></td>
-        <td><%= link_to 'Receive Order', receive_order_user_path(@current_user, :order_id => order.id) %></td>
+        <td>
+        </td>
       </tr>
       <% end %>
     <% end %>

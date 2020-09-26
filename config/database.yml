@@ -58,7 +58,8 @@ test:
 production:
   adapter: postgresql
   encoding: unicode
-  database: food_production
+  # database: food_production
+  database: food_development
   pool: 5
   username: 
   password:

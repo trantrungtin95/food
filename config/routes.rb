@@ -1,5 +1,7 @@
 Rails.application.routes.draw do
-  resources :orders
+  resources :orders do
+    post :completed, on: :member
+  end
   resources :line_items
   resources :carts
   get 'admin/index'
@@ -19,12 +21,14 @@ Rails.application.routes.draw do
   get 'store/index'
   root :to => 'store#index'
   resources :users do
-    get :receive_order, on: :member
+    post :receive_order, on: :member
     get :destroy_order_received, on: :member
     get :shipper, on: :member
-    get :unshipper, on: :member
-    get :my_orders, on: :collection
+    get :unshipper, on: :member # Need ID on url
+    get :my_orders, on: :collection # Not need ID in url.
     get :orders_received, on: :collection
+    get :shipper_location, on: :collection
+    get :get_shipper_location, on: :collection
   end
 
   get 'admin' => 'admin#index'
