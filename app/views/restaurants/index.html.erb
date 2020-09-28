@@ -76,19 +76,18 @@ function showPosition(position) {
   window.longitude = position.coords.longitude,
   x.innerHTML = "Latitude: " + position.coords.latitude +
   "<br>Longitude: " + position.coords.longitude;
-  
   $.get(`/restaurants/near_by`, { latitude: window.latitude, longitude: window.longitude }, function(data) {
-        window.restaurants = data
+        window.restaurants = data,
         console.log(window.restaurants);
-    } );
-} 
+    });
+}
 
 getLocation();
 function initMap() {
     var lat = window.latitude
     var lng = window.longitude
-    var uluru = {lat, lng};
-    window.map = new google.maps.Map(document.getElementById('map'), {zoom: 10, center: uluru});
+    var uluru = {lat, lng}
+    window.map = new google.maps.Map(document.getElementById('map'), {zoom: 15, center: uluru});
     var marker = new google.maps.Marker({position: uluru, map: window.map});
     $.each(window.restaurants, function(a,restaurant) {
     var resmarker = new google.maps.Marker({
@@ -101,8 +100,9 @@ function initMap() {
       });
 
       window.markers.push(resmarker);
-    })
+    });
   }
+setTimeout(initMap,200);
 
 $('div.restaurant-vote').each(function () {
       var restaurantvote = $(this).data("restaurant-vote")
@@ -113,7 +113,7 @@ $('div.restaurant-vote').each(function () {
           readOnly: true,
           starSize: 25,
       });
-  })
+  });
 
 
 </script>
