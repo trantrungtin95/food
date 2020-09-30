@@ -2,7 +2,11 @@
 
 <h1>Line Items</h1>
 
-<strong>Mã đơn hàng: <%= @order.id %></strong>
+<p><strong>Mã đơn hàng: <%= @order.id %></strong></p>
+<% if @order.status == "Unprocessed" %>
+<% else %>
+  <p><strong>Shipper: <%= ShipperOrder.where(order_id: @order.id).first.shipper.name %></strong></p>
+<% end %>
 
 <p><strong>Name: </strong><%= @order.name %></p>
 <p><strong>Address: </strong><%= @order.address %></p>
@@ -44,6 +48,7 @@
 
 <br>
 <div id='demo'></div>
+<div id="order" data-order='<%= @order.id%>'>
 
 <% if @order.status == "Processing" %>
   <% @shipper=ShipperOrder.where(order_id: @order.id).first.shipper %>
@@ -65,8 +70,8 @@
 <script>
 
 var address = $('#location-order').data('id');
-
 var x = document.getElementById("demo");
+var shipper_marker = null;
 
 function getLocation() {
   if (navigator.geolocation) {
@@ -74,7 +79,7 @@ function getLocation() {
   } else {
     x.innerHTML = "Geolocation is not supported by this browser.";
   }
-};
+}
 
 function showPosition(position) {
   window.latitude = position.coords.latitude,
@@ -83,42 +88,68 @@ function showPosition(position) {
         console.log();
         setTimeout(getLocation, 2000);
     } );
-}; 
+}
+
 getLocation();
+
 var shipper_id = $('#shipper').data('shipper')
 function getLocationShipper() {
+  if (shipper_id) {
   $.get(`/users/get_shipper_location`, { shipper_id: shipper_id }, function(data) {
         window.shipper = data;
-        window.shipper_marker.setMap(null);
-        window.shipper_marker = new google.maps.Marker({
-          position: {
-            lat: window.shipper.latitude, 
-            lng: window.shipper.longitude
-            }, 
-          label: window.shipper.name, 
-          map: window.map
-          });
         console.log(window.shipper);
-        setTimeout(getLocationShipper, 2000);
+        shipperMarker(window.shipper);
     } );
-};
+  setTimeout(getLocationShipper, 2000);
+  }
+}
+
 getLocationShipper();
+
+function shipperMarker(shipper) {
+        if ( shipper_marker ) {
+          shipper_marker.setMap(null);
+          } 
+        shipper_marker = new google.maps.Marker({
+          position: {
+            lat: shipper.latitude, 
+            lng: shipper.longitude
+            }, 
+          label: shipper.name, 
+          map: window.map
+        });
+}
+
+var order_id = $('#order').data('order');
+function getLocationRestaurant() {
+  $.get(`/orders/get_location_restaurants`, { order_id: order_id }, function(restaurants) {
+        console.log(restaurants);
+        markerRestaurant(restaurants);
+    } );
+}
+
+getLocationRestaurant()
+
+function markerRestaurant(restaurants) {
+    $.each(restaurants, function(index,restaurant) {
+    var resmarker = new google.maps.Marker({
+      position: {
+        lat: restaurant.latitude, 
+        lng: restaurant.longitude
+        }, 
+      label: restaurant.name, 
+      map: window.map
+      });
+    });
+}
+
 function initMap() {
     var lat = address[0];
     var lng = address[1];
     var uluru = {lat, lng};
     window.map = new google.maps.Map(document.getElementById('map'), {zoom: 12, center: uluru});
     var marker = new google.maps.Marker({position: uluru, map: window.map});
-    window.shipper_marker = new google.maps.Marker({
-      position: {
-        lat: window.shipper.latitude, 
-        lng: window.shipper.longitude
-        }, 
-      label: window.shipper.name, 
-      map: window.map
-      });
-  };
-setTimeout(initMap, 1000);
+  }
 </script>
 
 <script async defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCzs2ja1HKuzIFiccxeB-SFpqOg9WMUk3g&callback=initMap"

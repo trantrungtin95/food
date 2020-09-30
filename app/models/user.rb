@@ -8,7 +8,7 @@ class User < ApplicationRecord
     has_many :resvotes
     has_many :comments
     belongs_to :shipper, optional: true, :dependent => :destroy
-    validates :name, :presence => true, :uniqueness => true
+    validates :name, :email, :presence => true, :uniqueness => true
     validates :password, :confirmation => true
     attr_accessor :password_confirmation
     attr_reader :password

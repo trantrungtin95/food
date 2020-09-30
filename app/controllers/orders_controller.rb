@@ -84,6 +84,12 @@ class OrdersController < ApplicationController
     redirect_to @order
   end
 
+  def get_location_restaurants
+    order = Order.find(params[:order_id])
+    restaurants = order.line_items.map(&:dish).map(&:restaurant)
+    render json: restaurants.to_json(only: [:name, :latitude, :longitude])
+  end
+
   private
     # Use callbacks to share common setup or constraints between actions.
     def set_order

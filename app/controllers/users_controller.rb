@@ -35,6 +35,11 @@ class UsersController < ApplicationController
     redirect_to root_path if @current_user.id != @user.id
   end
 
+  def edit_email
+    @user = User.find(params[:id])
+    redirect_to root_path if @current_user.id != @user.id
+  end
+
   # POST /users
   # POST /users.json
   def create
@@ -138,7 +143,7 @@ class UsersController < ApplicationController
 
     # Only allow a list of trusted parameters through.
     def user_params
-      params.require(:user).permit(:name, :hashed_password, :salt, :password, :password_confirmation, :email, :avatar)
+      params.require(:user).permit(:name, :hashed_password, :salt, :password, :password_confirmation, :email)
     end
 
 end
