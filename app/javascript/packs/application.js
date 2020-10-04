@@ -8,6 +8,9 @@ require("turbolinks").start()
 require("@rails/activestorage").start()
 require("channels")
 require("jquery.star-rating-svg.min")
+// require("moment.min.js")
+import moment from 'moment';
+global.moment = moment;
 
 import('../styles/application.css');
 
