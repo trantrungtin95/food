@@ -101,11 +101,7 @@
 
   <div class="col-md-8">
 
-
-
-<div id='comment-list'>
-  <%= render @restaurant.root_comments.order('created_at desc') %>
-</div>
+<div id='comment-list'><%= render @restaurant.root_comments.order('created_at desc') %></div>
 
 
   
@@ -125,8 +121,7 @@
     var lng = $('#lng').data('id')
     var uluru = {lat, lng};
     // The map, centered at Uluru
-    var map = new google.maps.Map(
-      document.getElementById('map'), {zoom: 15, center: uluru});
+    var map = new google.maps.Map(document.getElementById('map'), {zoom: 15, center: uluru});
     // The marker, positioned at Uluru
     var marker = new google.maps.Marker({position: uluru, map: map});
   }

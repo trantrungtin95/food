@@ -39,14 +39,29 @@
 
 <% if @order.status == "Processing" %>
   <%= button_to 'Completed Order!', completed_order_path(@order) %>
-  <% elsif @order.status == "Unprocessed" %>
+  <br/>
+  <div id="send">
+    <%= render "send"%>
+  </div>
+
+  <h2>Messenger:</h2>
+  <% if @order.roomchats.exists? %>
+    <div id="chat-room">
+      <div id="render-chat-room" data-id="<%= @order.roomchats.count %>">
+        <div id="user-message" data-id="<%= @current_user.name %>"></div>
+      </div>
+    </div>
+  <% end %>
+  <% elsif @order.status == "Unprocessed" && @current_user.shipper_by(@current_user) %>
     <% if @current_user.uncompleted_order %>
     <% else %>
       <%= button_to 'Receive Order', receive_order_user_path(@current_user, :order_id => @order.id) %>
     <% end %>
 <% end %>
-
 <br>
+
+<hr/>
+
 <div id='demo'></div>
 <div id="order" data-order='<%= @order.id%>'>
 
@@ -131,7 +146,7 @@ function getLocationRestaurant() {
 getLocationRestaurant()
 
 function markerRestaurant(restaurants) {
-    $.each(restaurants, function(index,restaurant) {
+    $.each(restaurants, function(index, restaurant) {
     var resmarker = new google.maps.Marker({
       position: {
         lat: restaurant.latitude, 
@@ -150,6 +165,40 @@ function initMap() {
     window.map = new google.maps.Map(document.getElementById('map'), {zoom: 12, center: uluru});
     var marker = new google.maps.Marker({position: uluru, map: window.map});
   }
+
+var count_chats = 0;
+function renderChat() {
+  $.get(`/orders/chat_rooms`, { order_id: order_id }, function(roomchats) {
+      chatRooms(roomchats);
+      console.log(roomchats);
+    } );
+  setTimeout(renderChat, 1000);
+}
+renderChat();
+
+function chatRooms(roomchats) {
+  $.each(roomchats, function (index, roomchat) {
+    if(index >= count_chats) {
+      var a = document.getElementById("render-chat-room");
+      var p = document.createElement("p");
+      var user_message = $('#user-message').data('id');
+      var timeAgo = moment(roomchat.created_at).fromNow();
+      if (roomchat.sender_name == user_message) {
+        var cssClass = 'user-message';
+        p.className = cssClass;
+        p.innerHTML = roomchat.content + " :" + "<strong>" + roomchat.sender_name + "</strong>";
+      } else {
+        var cssClass = 'other-message';
+        p.className = cssClass;
+        p.innerHTML = "<strong>" + roomchat.sender_name + ": " + "</strong>" + roomchat.content + " - " + "<i>" + timeAgo + "</i>";
+      }
+      a.prepend(p);
+      count_chats = count_chats + 1; 
+      }
+    });
+
+}
+
 </script>
 
 <script async defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCzs2ja1HKuzIFiccxeB-SFpqOg9WMUk3g&callback=initMap"

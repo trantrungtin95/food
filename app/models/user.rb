@@ -7,6 +7,7 @@ class User < ApplicationRecord
     has_many :votes
     has_many :resvotes
     has_many :comments
+    has_many :roomchats
     belongs_to :shipper, optional: true, :dependent => :destroy
     validates :name, :email, :presence => true, :uniqueness => true
     validates :password, :confirmation => true

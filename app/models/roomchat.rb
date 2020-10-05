@@ -1,0 +1,2 @@
+class Roomchat < ApplicationRecord
+end

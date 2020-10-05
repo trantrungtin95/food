@@ -1,0 +1,7 @@
+<% if chat.persisted? %>
+  <p>
+        <strong><%= chat.sender_name %> :</strong>
+        <%= chat.content %> 
+        <i> sent <%= time_ago_in_words(chat.created_at) %> ago.</i>
+    </p>
+<% end %>

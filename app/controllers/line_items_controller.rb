@@ -3,7 +3,7 @@ class LineItemsController < ApplicationController
   # GET /line_items
   # GET /line_items.json
   def index
-    @order = Order.find(params[:format])
+    @order = Order.find(params[:order_id])
     @line_items = LineItem.where(order_id: @order.id)
   end
   # GET /line_items/1

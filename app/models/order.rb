@@ -1,5 +1,6 @@
 class Order < ApplicationRecord
     has_many :line_items, :dependent => :destroy
+    has_many :roomchats, :dependent => :destroy
     belongs_to :shipper_order, optional: true, :dependent => :destroy
     belongs_to :user
     PAYMENT_TYPES = [ "Cash on delivery", "Ngân lượng", "Bảo Kim", "Bank Card" ]
@@ -17,5 +18,9 @@ class Order < ApplicationRecord
     def location_order(address)
         results = Geocoder.search(address).first.coordinates
       end
+    
+    def chat_room
+        roomchats
+    end
     
 end

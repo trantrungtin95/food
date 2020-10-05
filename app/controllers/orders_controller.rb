@@ -90,6 +90,23 @@ class OrdersController < ApplicationController
     render json: restaurants.to_json(only: [:name, :latitude, :longitude])
   end
 
+  def chat
+    @order = Order.find(params[:id])
+    @roomchat = Roomchat.create(order_id: params[:id], 
+                                sender_id: params[:roomchat][:sender_id],
+                                sender_name: params[:roomchat][:sender_name],
+                                content: params[:roomchat][:content]
+                                )
+
+    # redirect_to line_items_path(@order) # User for html request
+  end 
+
+  def chat_rooms
+    order = Order.find(params[:order_id])
+    roomchats = order.roomchats
+    render json: roomchats.to_json(only: [:sender_name, :content, :created_at])
+  end
+
   private
     # Use callbacks to share common setup or constraints between actions.
     def set_order

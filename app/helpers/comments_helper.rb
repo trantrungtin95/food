@@ -18,7 +18,7 @@ module CommentsHelper
         end
     
         children = ""
-        comment.children_comments.each do |children_comment|
+        comment.children_comments.order('created_at desc').each do |children_comment|
             children += generate_comment_content(children_comment)
         end
         

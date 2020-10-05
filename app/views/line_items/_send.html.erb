@@ -1,0 +1,12 @@
+<% @roomchat = @order.roomchats.build %>
+<%= form_for @roomchat, url: chat_order_path(@order), remote: true do |f| %>
+    <%= f.hidden_field :sender_id, value: @current_user.id %>
+    <%= f.hidden_field :sender_name, value: @current_user.name %>
+    <div class="form-group">
+        <%= f.label :content %>:
+        <%= f.text_field :content, class: "form-control" %>
+    </div>
+    <div>
+        <%= f.submit "Send"%>
+    </div> 
+<% end %>

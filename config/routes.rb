@@ -2,6 +2,8 @@ Rails.application.routes.draw do
   resources :orders do
     post :completed, on: :member
     get :get_location_restaurants, on: :collection
+    post :chat, on: :member
+    get :chat_rooms, on: :collection
   end
   resources :line_items
   resources :carts

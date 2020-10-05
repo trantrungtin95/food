@@ -26,7 +26,7 @@
         <td><%= order.pay_type %></td>
         <td><%= time_ago_in_words(order.updated_at) %> ago</td>
         <td><%= order.status %></td>
-        <td><%= link_to 'Show',line_items_path(order) %></td>
+        <td><%= link_to 'Show',line_items_path(order_id: order.id) %></td>
         <td>
         </td>
       </tr>
