@@ -107,6 +107,25 @@ class OrdersController < ApplicationController
     render json: roomchats.to_json(only: [:sender_name, :content, :created_at])
   end
 
+  def shippervote
+    shippervote = Shippervote.create(
+                                      user_id: @current_user.id, 
+                                      shipper_id: params[:shipper_id], 
+                                      order_id: params[:id],
+                                      rating: params[:rating]
+                                    )
+  end
+
+  def uservote
+    order = Order.find(params[:id])
+    uservote = Uservote.create(
+                                user_id: order.user_id,
+                                shipper_id: params[:shipper_id],
+                                order_id: params[:id],
+                                rating: params[:rating]
+                                )
+  end
+
   private
     # Use callbacks to share common setup or constraints between actions.
     def set_order

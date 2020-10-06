@@ -8,6 +8,8 @@ class User < ApplicationRecord
     has_many :resvotes
     has_many :comments
     has_many :roomchats
+    has_many :shippervotes
+    has_many :uservotes
     belongs_to :shipper, optional: true, :dependent => :destroy
     validates :name, :email, :presence => true, :uniqueness => true
     validates :password, :confirmation => true

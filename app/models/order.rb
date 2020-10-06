@@ -1,6 +1,8 @@
 class Order < ApplicationRecord
     has_many :line_items, :dependent => :destroy
     has_many :roomchats, :dependent => :destroy
+    belongs_to :shippervote, optional: true
+    belongs_to :uservote, optional: true
     belongs_to :shipper_order, optional: true, :dependent => :destroy
     belongs_to :user
     PAYMENT_TYPES = [ "Cash on delivery", "Ngân lượng", "Bảo Kim", "Bank Card" ]

@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2020_10_05_115607) do
+ActiveRecord::Schema.define(version: 2020_10_06_121828) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -106,6 +106,15 @@ ActiveRecord::Schema.define(version: 2020_10_05_115607) do
     t.string "name"
   end
 
+  create_table "shippervotes", force: :cascade do |t|
+    t.integer "user_id"
+    t.integer "shipper_id"
+    t.float "rating"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.integer "order_id"
+  end
+
   create_table "users", force: :cascade do |t|
     t.string "name"
     t.string "status", default: "customer"
@@ -114,6 +123,15 @@ ActiveRecord::Schema.define(version: 2020_10_05_115607) do
     t.string "hashed_password"
     t.string "salt"
     t.string "email"
+  end
+
+  create_table "uservotes", force: :cascade do |t|
+    t.integer "user_id"
+    t.integer "shipper_id"
+    t.integer "order_id"
+    t.float "rating"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
   end
 
   create_table "votes", force: :cascade do |t|

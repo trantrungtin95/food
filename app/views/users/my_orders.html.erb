@@ -28,7 +28,7 @@
         <td><%= order.status %></td>
         <% if ShipperOrder.where(order_id: order.id).present? %>
           <% shipper_order = ShipperOrder.where(order_id: order.id).first %>
-          <td><%= shipper_order.shipper.user.name %></td>
+          <td><%= shipper_order.shipper.name %></td>
           <% else %>
           <td></td>
         <% end %>

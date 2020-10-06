@@ -1,5 +1,7 @@
 Rails.application.routes.draw do
   resources :orders do
+    post :shippervote, on: :member
+    post :uservote, on: :member
     post :completed, on: :member
     get :get_location_restaurants, on: :collection
     post :chat, on: :member

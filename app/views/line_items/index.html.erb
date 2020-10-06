@@ -3,9 +3,12 @@
 <h1>Line Items</h1>
 
 <p><strong>Mã đơn hàng: <%= @order.id %></strong></p>
+<div id="order-id" data-id="<%= @order.id %>"></div>
 <% if @order.status == "Unprocessed" %>
 <% else %>
-  <p><strong>Shipper: <%= ShipperOrder.where(order_id: @order.id).first.shipper.name %></strong></p>
+  <% @shipper = ShipperOrder.where(order_id: @order.id).first.shipper %>
+  <p><strong>Shipper: <%= @shipper.name %></strong></p>
+  <div id="shipper-id" data-id="<%= @shipper.id %>"></div>
 <% end %>
 
 <p><strong>Name: </strong><%= @order.name %></p>
@@ -38,8 +41,18 @@
 </table>
 
 <% if @order.status == "Processing" %>
-  <%= button_to 'Completed Order!', completed_order_path(@order) %>
+  <% if @current_user.shipper_by(@current_user) %>
+    <%= button_to 'Completed Order!', completed_order_path(@order) %>
+  <% end %>
   <br/>
+  <% elsif @order.status == "Unprocessed" && @current_user.shipper_by(@current_user) %>
+    <% if @current_user.uncompleted_order %>
+    <% else %>
+      <%= button_to 'Receive Order', receive_order_user_path(@current_user, :order_id => @order.id) %>
+    <% end %>
+<% end %>
+<br>
+<% if @order.status != "Unprocessed" %>
   <div id="send">
     <%= render "send"%>
   </div>
@@ -52,13 +65,31 @@
       </div>
     </div>
   <% end %>
-  <% elsif @order.status == "Unprocessed" && @current_user.shipper_by(@current_user) %>
-    <% if @current_user.uncompleted_order %>
-    <% else %>
-      <%= button_to 'Receive Order', receive_order_user_path(@current_user, :order_id => @order.id) %>
+   
+  <% if @order.user_id == @current_user.id %>
+    <% if Uservote.where(order_id: @order.id).present? %>
+      <% uservote = Uservote.where(order_id: @order.id).first %>
+      <div id="user-rating" data-id="<%= uservote.rating %>">Shipper voted for you:</div>
+    <% end %> 
+    <% if Shippervote.where(order_id: @order.id).present? %>
+      <% shippervote = Shippervote.where(order_id: @order.id).first %>
+      <div id="shipper-rating" data-id="<%= shippervote.rating %>">You voted for Shipper:</div>
+    <% elsif %>
+      <div id="shipper-rating">Lest's Vote for Shipper:</div>
     <% end %>
+  <% elsif @shipper.user_id == @current_user.id %>
+    <% if Shippervote.where(order_id: @order.id).present? %>
+      <% shippervote = Shippervote.where(order_id: @order.id).first %>
+      <div id="shipper-rating" data-id="<%= shippervote.rating %>">User voted for you:</div>
+    <% end %>
+    <% if Uservote.where(order_id: @order.id).present? %>
+      <% uservote = Uservote.where(order_id: @order.id).first %>
+      <div id="user-rating" data-id="<%= uservote.rating %>">You voted for User:</div>
+    <% elsif %>
+      <div id="user-rating">Lest's Vote for User:</div>
+    <% end %>
+  <% end %>
 <% end %>
-<br>
 
 <hr/>
 
@@ -199,6 +230,46 @@ function chatRooms(roomchats) {
 
 }
 
+var shipper_rating = $('#shipper-rating').data('id');
+var readonly_shipper_rating = false;
+
+if (shipper_rating > 0) { 
+  readonly_shipper_rating = true 
+}
+$('#shipper-rating').starRating({
+  initialRating: shipper_rating,
+  strokeColor: '#894A00',
+  strokeWidth: 10,
+  readOnly: readonly_shipper_rating,
+  starSize: 25,
+  callback: function(currentRating, $el){
+    var orderId = $('#order-id').data('id');
+     var shipperId = $('#shipper-id').data('id');
+    $.post(`/orders/${orderId}/shippervote`, { rating: currentRating, shipper_id: shipperId}, function(data) {
+      console.log(currentRating);
+    } )
+  }
+});
+
+var user_rating = $('#user-rating').data('id');
+var readonly_user_rating = false;
+if (user_rating > 0) { 
+  readonly_user_rating = true 
+}
+$('#user-rating').starRating({
+  initialRating: user_rating,
+  strokeColor: '#894A00',
+  strokeWidth: 10,
+  readOnly: readonly_user_rating,
+  starSize: 25,
+  callback: function(currentRating, $el){
+     var orderId = $('#order-id').data('id');
+     var shipperId = $('#shipper-id').data('id');
+    $.post(`/orders/${orderId}/uservote`, { rating: currentRating, shipper_id: shipperId}, function(data) {
+      console.log(currentRating);
+    } )
+  }
+});
 </script>
 
 <script async defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCzs2ja1HKuzIFiccxeB-SFpqOg9WMUk3g&callback=initMap"
