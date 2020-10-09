@@ -95,7 +95,7 @@ class OrdersController < ApplicationController
     @roomchat = Roomchat.create(order_id: params[:id], 
                                 sender_id: params[:roomchat][:sender_id],
                                 sender_name: params[:roomchat][:sender_name],
-                                content: params[:roomchat][:content]
+                                content: params[:message]
                                 )
 
     # redirect_to line_items_path(@order) # User for html request

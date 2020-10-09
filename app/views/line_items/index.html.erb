@@ -53,11 +53,11 @@
 <% end %>
 <br>
 <% if @order.status != "Unprocessed" %>
+  <h2>Messenger:</h2>
   <div id="send">
     <%= render "send"%>
   </div>
 
-  <h2>Messenger:</h2>
   <% if @order.roomchats.exists? %>
     <div id="chat-room">
       <div id="render-chat-room" data-id="<%= @order.roomchats.count %>">
