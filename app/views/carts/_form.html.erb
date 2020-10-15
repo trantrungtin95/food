@@ -10,7 +10,7 @@
       </ul>
     </div>
   <% end %>
-
+  <%= form.hidden_field :restaurant_id, value: @current_user.id %>
   <div class="actions">
     <%= form.submit %>
   </div>

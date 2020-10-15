@@ -17,6 +17,9 @@
     </div>
     <div align="right", id="home">
       <h4>
+        <% if current_cart.persisted? %>
+          <%= link_to "My Cart", restaurant_path(current_cart.restaurant) %>
+        <% end %>
         <%= link_to "Home", root_path %>
         <%= link_to "Restaurants", restaurants_path %>
         <% if session[:user_id].present? && User.find(session[:user_id]).shipper_by(User.find(session[:user_id])) %>
@@ -37,14 +40,6 @@
               <h1>
                 Hello <%= User.find(session[:user_id]).name %>
               </h1>
-            <% end %>
-          </div>
-          <div id="cart">
-            <%= hide_cart_if(current_cart.line_items.empty?, :id => "cart") do %>
-            <%# <% if current_cart.line_items.present? %> 
-                <p>
-                  <%= render(current_cart) %> 
-                </p>
             <% end %>
           </div>
           <div align="right", id="search">

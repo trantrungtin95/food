@@ -4,6 +4,7 @@ class LineItemsController < ApplicationController
   # GET /line_items.json
   def index
     @order = Order.find(params[:order_id])
+    @restaurant = @order.restaurant
     @line_items = LineItem.where(order_id: @order.id)
   end
   # GET /line_items/1
@@ -23,17 +24,20 @@ class LineItemsController < ApplicationController
   # POST /line_items
   # POST /line_items.json
   def create
+    @restaurant = Restaurant.find(params[:restaurant_id])
     @cart = current_cart
-    dish = Dish.find(params[:dish_id])
-    @line_item = @cart.add_dish(dish.id)
-    respond_to do |format|
-      if @line_item.save
-        format.html { redirect_to '/', notice: 'Line item was successfully created.' }
-        format.js   { @current_item = @line_item }
-        format.json { render :show, status: :created, location: @line_item }
-      else
-        format.html { render :new }
-        format.json { render json: @line_item.errors, status: :unprocessable_entity }
+    if @restaurant.id == @cart.restaurant_id
+      dish = Dish.find(params[:dish_id])
+      @line_item = @cart.add_dish(dish.id, @restaurant.id)
+      respond_to do |format|
+        if @line_item.save
+          format.html { redirect_to '/', notice: 'Line item was successfully created.' }
+          format.js   { @current_item = @line_item }
+          format.json { render :show, status: :created, location: @line_item }
+        else
+          format.html { render :new }
+          format.json { render json: @line_item.errors, status: :unprocessable_entity }
+        end
       end
     end
   end
@@ -70,6 +74,6 @@ class LineItemsController < ApplicationController
 
     # Only allow a list of trusted parameters through.
     def line_item_params
-      params.require(:line_item).permit(:dish_id, :cart_id)
+      params.require(:line_item).permit(:dish_id, :cart_id, :restaurant_id)
     end
 end

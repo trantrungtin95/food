@@ -25,6 +25,26 @@
     <strong>Close time:</strong>
     <%= @restaurant.close_time.strftime("%I:%M %p") %>
   </p>
+  <div id="render-coupon-code"></div>
+  <p>
+    <% if @current_user.id == @restaurant.user.id %>
+      <%= link_to "List Coupon Code", restaurant_coupon_codes_path(@restaurant) %>
+    <% end %>
+    </p>
+  <div id="coupon-code">
+    <% if @restaurant.coupon_codes.where(status: "not_over").present? %>
+      <% coupon_code = @restaurant.coupon_codes.where(status: "not_over").first %>
+      <p>
+        <strong>Coupon Code:</strong>
+        <%= coupon_code.coupon_code %>
+      </p>
+      <p>
+        <strong>Discount:</strong>
+        <%= coupon_code.discount %>%
+      </p>
+    <% end %>
+  </div>
+
 
   <% if @restaurant.resvotes.present? %>
     <div class="restaurant-vote" data-restaurant-vote='<%= @restaurant.resvote_rounding(@restaurant.restaurant_vote) %>'>
@@ -77,7 +97,7 @@
               <div class="dish-vote"data-dish-vote='<%= dish.rounding(dish.dish_vote) %>'></div>
             <% end %>
             <div class="card-footer">
-              <%= button_to 'Add to Cart', line_items_path(:dish_id => dish), remote: :true %>
+              <%= button_to 'Add to Cart', line_items_path(:dish_id => dish, :restaurant_id => @restaurant.id), remote: :true %>
             </div>
           </h4>
         </div>

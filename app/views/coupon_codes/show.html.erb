@@ -1,0 +1,14 @@
+<p id="notice"><%= notice %></p>
+
+<p>
+  <strong>Restaurant:</strong>
+  <%= @coupon_code.restaurant_id %>
+</p>
+
+<p>
+  <strong>Coupon code:</strong>
+  <%= @coupon_code.coupon_code %>
+</p>
+
+<%= link_to 'Edit', edit_coupon_code_path(@coupon_code) %> |
+<%= link_to 'Back', coupon_codes_path %>

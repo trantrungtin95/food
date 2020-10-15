@@ -22,10 +22,11 @@ class OrdersController < ApplicationController
   # GET /orders/new
   def new
     @cart = current_cart
-        if @cart.line_items.empty?
-            redirect_to '/', :notice => 'Your cart is empty'
-            return
-        end
+    if @cart.line_items.empty?
+        redirect_to '/', :notice => 'Your cart is empty'
+        return
+    end
+    @restaurant = Restaurant.find(params[:restaurant_id])
     @order = Order.new
   end
 
@@ -36,11 +37,19 @@ class OrdersController < ApplicationController
   # POST /orders
   # POST /orders.json
   def create
+    @restaurant = Restaurant.find(params[:order][:restaurant_id])
+      if params[:order][:coupon_code] != "" 
+        @coupon_code = @restaurant.coupon_codes.where(status: "not_over").first
+        discount = @coupon_code.discount
+      else
+        discount = 0
+      end
+    # always create order
+    # if coupon code is wrong, no discount
     @order = Order.new(order_params)
     @order.add_line_items_from_cart(current_cart)
-
     respond_to do |format|
-      if @order.save
+      if @order.update(discount: discount)
         Cart.destroy(session[:cart_id])
         session[:cart_id] = nil
         OrdermailMailer.order_received(@order).deliver
@@ -134,6 +143,6 @@ class OrdersController < ApplicationController
 
     # Only allow a list of trusted parameters through.
     def order_params
-      params.require(:order).permit(:name, :address, :email, :pay_type, :user_id, :status )
+      params.require(:order).permit(:name, :address, :email, :pay_type, :user_id, :status, :restaurant_id, :coupon_code)
     end
 end

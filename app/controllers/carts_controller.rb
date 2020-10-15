@@ -4,6 +4,10 @@ class CartsController < ApplicationController
   # GET /carts
   # GET /carts.json
   def index
+    # TODO: 
+    # FIXME
+    # QUESTION
+    
         @carts = []
         if session[:cart_id] != nil
             @carts << Cart.find_by_id(session[:cart_id])
@@ -28,7 +32,6 @@ class CartsController < ApplicationController
   # POST /carts.json
   def create
     @cart = Cart.new(cart_params)
-
     respond_to do |format|
       if @cart.save
         format.html { redirect_to @cart, notice: 'Cart was successfully created.' }
@@ -58,10 +61,11 @@ class CartsController < ApplicationController
   # DELETE /carts/1.json
   def destroy
       @cart = current_cart
+      @restaurant = @cart.restaurant
       @cart.destroy
       session[:cart_id] = nil
       respond_to do |format|
-        format.html { redirect_to '/'}
+        format.html { redirect_to @restaurant}
         format.json { head :no_content }
     end
   end

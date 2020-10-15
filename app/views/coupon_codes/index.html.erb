@@ -1,0 +1,31 @@
+
+<p id="notice"><%= notice %></p>
+
+<h1>List Coupon Codes</h1>
+
+<table>
+  <thead>
+    <tr>
+      <th>Coupon code</th>
+      <th>Discount</th>
+      <th>End Date</th>
+      <th>Status</th>
+      <th colspan="3"></th>
+    </tr>
+  </thead>
+
+  <tbody>
+    <% @coupon_codes.each do |coupon_code| %>
+      <tr>
+        <td><%= coupon_code.coupon_code %></td>
+        <td><%= coupon_code.discount %></td>
+        <td><%= coupon_code.end_date %></td>
+        <td><%= coupon_code.status %></td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>
+
+<br>
+
+<%= link_to 'New Coupon Code', new_restaurant_coupon_code_path(@restaurant) %>

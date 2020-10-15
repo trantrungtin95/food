@@ -1,0 +1,13 @@
+<p>
+    <strong>Coupon Code:</strong>
+    <%= coupon_code.coupon_code %>
+    <% if @current_user.id == @restaurant.user.id %>
+        <%= link_to "Delete", destroy_coupon_code_restaurant_path(@restaurant), data: { confirm: 'Are you sure?' } %>
+    <% end %>
+</p>
+<p>
+    <strong>Discount:</strong>
+    <%= coupon_code.discount %>%
+    <strong>End Date:</strong>
+    <%= coupon_code.end_date %>%
+</p>

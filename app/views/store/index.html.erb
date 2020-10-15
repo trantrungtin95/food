@@ -20,9 +20,6 @@
                         <% if dish.votes.present? %>
                             <div class="dish-vote" id="dish-vote-<%= dish.id %>" data-dish-vote='<%= dish.rounding(dish.dish_vote) %>'></div>
                         <% end %>
-                        <div class="card-footer">
-                            <%= button_to 'Add to Cart', line_items_path(:dish_id => dish), remote: :true %>
-                        </div>
                     </h6>
                 </div>
             </div>

@@ -1,7 +1,11 @@
 class Restaurant < ApplicationRecord
     belongs_to :user
-    has_many :comments
+    has_many :orders, :dependent => :destroy
+    has_many :carts, :dependent => :destroy
+    has_many :coupon_codes, :dependent => :destroy
+    has_many :comments, :dependent => :destroy
     has_many :resvotes
+    has_many :line_items
     has_many :dishes, :dependent => :destroy
 
     scope :find_restaurants_name, -> (search){ where("name LIKE ?", "%#{search}%")}
@@ -38,5 +42,6 @@ class Restaurant < ApplicationRecord
       restaurants = Restaurant.near([latitude,longitude], 200)
       restaurants.to_json(only: [:name, :latitude, :longitude])
     end
+
 
 end

@@ -1,6 +1,7 @@
 class RestaurantsController < ApplicationController
   skip_before_action :verify_authenticity_token
   before_action :set_restaurant, only: [:show, :edit, :update, :destroy]
+  layout 'restaurant_application', only: [:show]
 
   # GET /restaurants
   # GET /restaurants.json
@@ -88,6 +89,28 @@ class RestaurantsController < ApplicationController
 
   def resvote
     @resvote = Resvote.create(user_id: @current_user.id, restaurant_id: params[:id], rating: params[:rate])
+  end
+
+  def destroy_coupon_code
+    @restaurant = Restaurant.find(params[:id])
+    @coupon_code = CouponCode.where(restaurant_id: params[:id]).first
+    @coupon_code.destroy
+    redirect_to @restaurant
+  end
+
+  def check_coupon_code
+    restaurant = Restaurant.find(params[:restaurant_id])
+    if restaurant.coupon_codes.where(status: "not_over").present?
+      coupon_code = restaurant.coupon_codes.where(status: "not_over").first
+      if coupon_code.coupon_code == params[:order_coupon_code]
+        data = "Exact coupon code! Discout is #{coupon_code.discount}%"
+      else
+        data = "Coupon code is incorrect!"
+      end
+    else
+      data = "The Restaurant currently has no promotions!"
+    end
+    render html: data
   end
 
   private

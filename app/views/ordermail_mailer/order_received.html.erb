@@ -13,6 +13,21 @@
     </tr>
     <%= render @order.line_items %>
 </table>
+<p>
+    <strong>
+    Total Price: 
+    <% price = @order.line_items.to_a.sum { |item| item.total_price }%>
+    <%= number_to_currency(price) %>
+    </strong>
+</p>
+
+<p>
+    <strong>Discount: <%= @order.discount%>%</strong>
+</p>
+
+<p>
+    <strong>Last Price: <%= number_to_currency(price*(100-@order.discount)/100)%></strong>
+</p>
  
 <p>Your payment type: <b><%= @order.pay_type %></b></p>
 <p>Thanks for ordering at <b>RESTAURANT ONLINE<b> and best regards.</p>

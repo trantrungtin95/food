@@ -1,2 +1,2 @@
-json.extract! line_item, :id, :dish_id, :cart_id, :created_at, :updated_at
+json.extract! line_item, :id, :dish_id, :cart_id, :created_at, :updated_at, :restaurant_id
 json.url line_item_url(line_item, format: :json)

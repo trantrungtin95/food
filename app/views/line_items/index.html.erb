@@ -40,6 +40,14 @@
   </tbody>
 </table>
 
+<p>
+  <strong>Discount: <%= @order.discount%>%</strong>
+</p>
+<p>
+  <% price = @line_items.to_a.sum { |item| item.total_price }%>
+  <strong>Last Price: <%= number_to_currency(price*(100-@order.discount)/100)%></strong>
+</p>
+
 <% if @order.status == "Processing" %>
   <% if @current_user.shipper_by(@current_user) %>
     <%= button_to 'Completed Order!', completed_order_path(@order) %>

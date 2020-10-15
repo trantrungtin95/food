@@ -1,7 +1,11 @@
-var content = "<%= escape_javascript(render(current_cart)) %>";
-document.getElementById("cart").innerHTML = content;
-$("#current_item").css({'background-color':'#88ff88'});
-$("#current_item").animate({backgroundColor:'#ffe8cc'}, 1000 );
-var p_notice = document.getElementById("notice");
-if(p_notice !== null)
-    p_notice.remove();
+<% if @line_item.present? %>
+    var content = "<%= escape_javascript(render(current_cart)) %>";
+    document.getElementById("cart").innerHTML = content;
+    $("#current_item").css({'background-color':'#88ff88'});
+    $("#current_item").animate({backgroundColor:'#ffe8cc'}, 1000 );
+    var p_notice = document.getElementById("notice");
+    if(p_notice !== null)
+        p_notice.remove();
+    <% else %>
+    alert("You have a checkout cart!");
+<% end %>

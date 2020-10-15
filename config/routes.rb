@@ -14,7 +14,11 @@ Rails.application.routes.draw do
   get 'sessions/create'
   get 'sessions/destroy'
   resources :restaurants do
+    resources :orders # nested resource
     resources :comments
+    resources :coupon_codes
+    get :check_coupon_code, on: :collection
+    get :destroy_coupon_code, on: :member
     get :search, on: :collection
     get :near_by, on: :collection
     post :resvote, on: :member

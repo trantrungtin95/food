@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2020_10_06_121828) do
+ActiveRecord::Schema.define(version: 2020_10_13_140706) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -18,6 +18,7 @@ ActiveRecord::Schema.define(version: 2020_10_06_121828) do
   create_table "carts", force: :cascade do |t|
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
+    t.integer "restaurant_id"
   end
 
   create_table "comments", force: :cascade do |t|
@@ -28,6 +29,23 @@ ActiveRecord::Schema.define(version: 2020_10_06_121828) do
     t.datetime "updated_at", precision: 6, null: false
     t.integer "level", default: 0
     t.integer "comment_id"
+  end
+
+  create_table "coupon_codes", force: :cascade do |t|
+    t.integer "restaurant_id"
+    t.string "coupon_code"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.float "discount"
+    t.datetime "end_date"
+    t.string "status", default: "not_over"
+  end
+
+  create_table "coupons", force: :cascade do |t|
+    t.integer "restaurant_id"
+    t.integer "coupon_code"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
   end
 
   create_table "dishes", force: :cascade do |t|
@@ -47,6 +65,7 @@ ActiveRecord::Schema.define(version: 2020_10_06_121828) do
     t.datetime "updated_at", precision: 6, null: false
     t.integer "quantity", default: 1
     t.integer "order_id"
+    t.integer "restaurant_id"
   end
 
   create_table "orders", force: :cascade do |t|
@@ -58,6 +77,9 @@ ActiveRecord::Schema.define(version: 2020_10_06_121828) do
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
     t.string "status", default: "Unprocessed"
+    t.string "coupon_code"
+    t.integer "restaurant_id"
+    t.integer "discount"
   end
 
   create_table "restaurants", force: :cascade do |t|

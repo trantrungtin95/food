@@ -32,11 +32,6 @@
   <div class="my-rating"></div>
 <% end %>
 
-
-
-<div class="card-footer">
-  <%= button_to 'Add to Cart', line_items_path(:dish_id => @dish), remote: :true %>
-</div>
 <div>
   <% if @current_user.id == @dish.user_id%>
     <%= link_to 'Edit', edit_dish_path(@dish) %> |

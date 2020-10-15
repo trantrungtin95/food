@@ -1,4 +1,5 @@
 @import "components/star-rating-svg";
+@import 'bootstrap';
 
 .show-restaurant {
     text-align: center;
@@ -126,4 +127,19 @@ body {
 }
 .user-message {
     text-align: right;
+}
+
+.form-label {
+   width: 200px;
+   float: left;
+   display: block;
+}
+
+.form-group {
+   padding: 4px;
+}
+
+.image-url {
+   width: 415px;
+   height: 270px;
 }
