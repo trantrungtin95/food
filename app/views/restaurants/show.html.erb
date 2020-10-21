@@ -97,7 +97,7 @@
               <div class="dish-vote"data-dish-vote='<%= dish.rounding(dish.dish_vote) %>'></div>
             <% end %>
             <div class="card-footer">
-              <%= button_to 'Add to Cart', line_items_path(:dish_id => dish, :restaurant_id => @restaurant.id), remote: :true %>
+              <%= button_to 'Add to Cart', line_items_path(:user_id => @current_user.id, :dish_id => dish, :restaurant_id => @restaurant.id), remote: :true %>
             </div>
           </h4>
         </div>

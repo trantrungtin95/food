@@ -28,7 +28,7 @@ class LineItemsController < ApplicationController
     @cart = current_cart
     if @restaurant.id == @cart.restaurant_id
       dish = Dish.find(params[:dish_id])
-      @line_item = @cart.add_dish(dish.id, @restaurant.id)
+      @line_item = @cart.add_dish(@current_user.id, dish.id, @restaurant.id)
       respond_to do |format|
         if @line_item.save
           format.html { redirect_to '/', notice: 'Line item was successfully created.' }
@@ -74,6 +74,6 @@ class LineItemsController < ApplicationController
 
     # Only allow a list of trusted parameters through.
     def line_item_params
-      params.require(:line_item).permit(:dish_id, :cart_id, :restaurant_id)
+      params.require(:line_item).permit(:user_id, :dish_id, :cart_id, :restaurant_id)
     end
 end

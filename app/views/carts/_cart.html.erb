@@ -1,4 +1,10 @@
 <h2>Your cart</h2>
+<h2>Mã Nhóm: <%= cart.id%></h2>
+<h2>Được tạo bởi: 
+    <% if !cart.user_id.nil? %>
+        <%= cart.user.name%>
+    <% end %>
+</h2>
 <table>
     <%= render cart.line_items %>
     <tr class="total_line">
@@ -6,12 +12,13 @@
         <td class="total_cell"><%= number_to_currency(cart.total_price) %></td>
     </tr>
 </table>
-
-<%= button_to 'Checkout', 
-              new_restaurant_order_path(@restaurant), 
-              :method => :get %><br>
- 
-<%= button_to 'Empty cart', 
-              cart, 
-              :method => :delete,
-              data: {confirm: 'Are you sure?' } %>
+<% if current_user.id == cart.user_id %>
+    <%= button_to 'Checkout', 
+                new_restaurant_order_path(@restaurant), 
+                :method => :get %><br>
+    
+    <%= button_to 'Empty cart', 
+                cart, 
+                :method => :delete,
+                data: {confirm: 'Are you sure?' } %>
+<% end %>

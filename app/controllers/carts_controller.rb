@@ -70,6 +70,19 @@ class CartsController < ApplicationController
     end
   end
 
+  def order_group
+  end
+
+  def group_code
+    if Cart.where(id: params[:group_code]).present?
+      @cart = current_cart
+      @restaurant = Restaurant.find(@cart.restaurant_id)
+      redirect_to @restaurant
+    else
+      redirect_to order_group_carts_path, notice: 'The group code is incorrect!' 
+    end
+  end
+
   private
     # Use callbacks to share common setup or constraints between actions.
     def set_cart

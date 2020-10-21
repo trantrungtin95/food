@@ -19,6 +19,7 @@
 <table>
   <thead>
     <tr>
+      <th>User Name</th>
       <th>Dish</th>
       <th>Quantity</th>
       <th colspan="3"></th>
@@ -28,6 +29,7 @@
   <tbody>
     <% @line_items.each do |line_item| %>
       <tr>
+        <td><%= line_item.user.name%></td>
         <td><%= line_item.dish.name %></td>
         <td><%= line_item.quantity%>x</td>
         <td class="item_price"><%= number_to_currency(line_item.total_price) %></td>
@@ -50,7 +52,7 @@
 
 <% if @order.status == "Processing" %>
   <% if @current_user.shipper_by(@current_user) %>
-    <%= button_to 'Completed Order!', completed_order_path(@order) %>
+    <%= button_to 'Completed Order!', completed_restaurant_order_path(@restaurant, @order) %>
   <% end %>
   <br/>
   <% elsif @order.status == "Unprocessed" && @current_user.shipper_by(@current_user) %>
@@ -66,13 +68,12 @@
     <%= render "send"%>
   </div>
 
-  <% if @order.roomchats.exists? %>
-    <div id="chat-room">
-      <div id="render-chat-room" data-id="<%= @order.roomchats.count %>">
-        <div id="user-message" data-id="<%= @current_user.name %>"></div>
-      </div>
+  <div id="chat-room">
+    <div id="render-chat-room" data-id="<%= @order.roomchats.count %>">
+      <div id="user-message" data-id="<%= @current_user.name %>"></div>
+      <div id="restaurant-id" data-id="<%= @restaurant.id %>"></div>
     </div>
-  <% end %>
+  </div>
    
   <% if @order.user_id == @current_user.id %>
     <% if Uservote.where(order_id: @order.id).present? %>
@@ -122,7 +123,7 @@
 
 
 <script>
-
+var restaurantId = $('#restaurant-id').data('id');
 var address = $('#location-order').data('id');
 var x = document.getElementById("demo");
 var shipper_marker = null;
@@ -176,7 +177,7 @@ function shipperMarker(shipper) {
 
 var order_id = $('#order').data('order');
 function getLocationRestaurant() {
-  $.get(`/orders/get_location_restaurants`, { order_id: order_id }, function(restaurants) {
+  $.get(`restaurants/${restaurantId}/orders/get_location_restaurants`, { order_id: order_id }, function(restaurants) {
         console.log(restaurants);
         markerRestaurant(restaurants);
     } );
@@ -207,7 +208,7 @@ function initMap() {
 
 var count_chats = 0;
 function renderChat() {
-  $.get(`/orders/chat_rooms`, { order_id: order_id }, function(roomchats) {
+  $.get(`restaurants/${restaurantId}/orders/chat_rooms`, { order_id: order_id }, function(roomchats) {
       chatRooms(roomchats);
       console.log(roomchats);
     } );
@@ -253,7 +254,7 @@ $('#shipper-rating').starRating({
   callback: function(currentRating, $el){
     var orderId = $('#order-id').data('id');
      var shipperId = $('#shipper-id').data('id');
-    $.post(`/orders/${orderId}/shippervote`, { rating: currentRating, shipper_id: shipperId}, function(data) {
+    $.post(`restaurants/${restaurantId}/orders/${orderId}/shippervote`, { rating: currentRating, shipper_id: shipperId}, function(data) {
       console.log(currentRating);
     } )
   }
@@ -273,7 +274,7 @@ $('#user-rating').starRating({
   callback: function(currentRating, $el){
      var orderId = $('#order-id').data('id');
      var shipperId = $('#shipper-id').data('id');
-    $.post(`/orders/${orderId}/uservote`, { rating: currentRating, shipper_id: shipperId}, function(data) {
+    $.post(`restaurants/${restaurantId}/orders/${orderId}/uservote`, { rating: currentRating, shipper_id: shipperId}, function(data) {
       console.log(currentRating);
     } )
   }

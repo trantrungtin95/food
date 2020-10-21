@@ -19,11 +19,13 @@
       <h4>
         <% if current_cart.persisted? %>
           <%= link_to "My Cart", restaurant_path(current_cart.restaurant) %>
+        <% else %>
+          <%= link_to "Order Group", order_group_carts_path%>
         <% end %>
         <%= link_to "Home", root_path %>
         <%= link_to "Restaurants", restaurants_path %>
         <% if session[:user_id].present? && User.find(session[:user_id]).shipper_by(User.find(session[:user_id])) %>
-          <%= link_to "Ordes List", orders_path%>
+          <%= link_to "Ordes List", list_orders_user_path(session[:user_id])%>
         <% end %>
         <% if session[:user_id] %>
             <%= link_to 'User', user_path(session[:user_id]) %>

@@ -96,7 +96,8 @@ class UsersController < ApplicationController
     shipper_order = ShipperOrder.create(shipper_id: @shipper.id, order_id: params[:order_id] )
     @order = Order.find(params[:order_id])
     @order.update(status: 'Processing')
-    redirect_to @order
+    @restaurant = Restaurant.find(@order.restaurant_id)
+    redirect_to restaurant_order_path(@restaurant, @order)
     ReceiveOrderMailer.received_order(@order, @current_user).deliver
   end
   
@@ -112,7 +113,7 @@ class UsersController < ApplicationController
 
 
   def orders_received
-    user = User.find(params[:format])
+    user = User.find(params[:id])
     shipper = Shipper.where(user_id: user.id).first
     @shipper_orders = ShipperOrder.where(shipper_id: shipper.id)
     @orders_received = @shipper_orders.map(&:order)
@@ -134,6 +135,16 @@ class UsersController < ApplicationController
     render json: shipper.to_json(only: [:name, :latitude, :longitude])
     end
   end
+
+  def list_orders
+    @shipper = Shipper.where(user_id: current_user.id).first
+    if @current_user.shipper_by(@current_user)
+      
+      @orders = Order.all
+    else
+      redirect_to root_path
+    end
+  end 
 
   private
     # Use callbacks to share common setup or constraints between actions.

@@ -3,7 +3,8 @@
         <tr id="current_item"></tr>
     <% end %>
 <% end %>
-<tr>
+<tr>    
+        <td><%= line_item.user.name %>: </td>
         <td><%= line_item.quantity %>x</td>
         <td><%= line_item.dish.name %></td>
         <td class="item_price"><%= number_to_currency(line_item.total_price) %></td>

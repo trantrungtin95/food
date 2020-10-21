@@ -53,7 +53,7 @@ class OrdersController < ApplicationController
         Cart.destroy(session[:cart_id])
         session[:cart_id] = nil
         OrdermailMailer.order_received(@order).deliver
-        format.html { redirect_to @order, notice: 'Order was successfully created.' }
+        format.html { redirect_to restaurant_order_path(@restaurant, @order), notice: 'Order was successfully created.' }
         format.json { render :show, status: :created, location: @order }
       else
         format.html { render :new }
@@ -67,7 +67,7 @@ class OrdersController < ApplicationController
   def update
     respond_to do |format|
       if @order.update(order_params)
-        format.html { redirect_to @order, notice: 'Order was successfully updated.' }
+        format.html { redirect_to restaurant_order_path(@restaurant, @order), notice: 'Order was successfully updated.' }
         format.json { render :show, status: :ok, location: @order }
       else
         format.html { render :edit }
@@ -89,8 +89,9 @@ class OrdersController < ApplicationController
   def completed
     @order = Order.find(params[:id])
     @order.update(status: 'Processed')
+    @restaurant = Restaurant.find(@order.restaurant_id)
     ShipperOrder.where(order_id: @order.id).first.update(status: "Processed")
-    redirect_to @order
+    redirect_to restaurant_order_path(@restaurant, @order)
   end
 
   def get_location_restaurants

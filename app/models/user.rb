@@ -1,6 +1,7 @@
 require 'digest/sha2'
 
 class User < ApplicationRecord
+    has_many :line_items
     has_many :orders
     has_many :restaurants
     has_many :dishes
@@ -10,6 +11,7 @@ class User < ApplicationRecord
     has_many :roomchats
     has_many :shippervotes
     has_many :uservotes
+    has_many :cart
     belongs_to :shipper, optional: true, :dependent => :destroy
     validates :name, :email, :presence => true, :uniqueness => true
     validates :password, :confirmation => true
@@ -67,7 +69,7 @@ class User < ApplicationRecord
     def uncompleted_order
         if Shipper.where(user_id: id).present? 
             shipper_id = Shipper.where(user_id: id).first.id
-            orders_received = ShipperOrder.where(shipper_id: shipper_id, status: "Processing").present?
+            ShipperOrder.where(shipper_id: shipper_id, status: "Processing").present?
         end
     end
 

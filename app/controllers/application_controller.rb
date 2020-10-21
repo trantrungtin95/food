@@ -7,7 +7,9 @@ class ApplicationController < ActionController::Base
         Cart.find(session[:cart_id])
     rescue ActiveRecord::RecordNotFound
         if !params[:restaurant_id].nil? && !params[:dish_id].nil?
-            cart = Cart.create(restaurant_id: params[:restaurant_id])
+            cart = Cart.create(user_id: @current_user.id, restaurant_id: params[:restaurant_id])
+        elsif !params[:group_code].nil?
+            cart = Cart.find(params[:group_code])
         else
             cart = Cart.create()
         end
