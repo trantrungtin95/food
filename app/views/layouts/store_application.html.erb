@@ -18,7 +18,7 @@
     <div align="right", id="home">
       <h4>
         <% if current_cart.persisted? %>
-          <%= link_to "My Cart", restaurant_path(current_cart.restaurant) %>
+          <%# <%= link_to "My Cart", restaurant_path(current_cart.restaurant) %> %>
         <% else %>
           <%= link_to "Order Group", order_group_carts_path %>
         <% end %>
