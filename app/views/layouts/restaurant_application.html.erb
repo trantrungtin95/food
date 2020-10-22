@@ -20,7 +20,7 @@
         <% if current_cart.persisted? %>
           <%= link_to "My Cart", restaurant_path(current_cart.restaurant) %>
         <% else %>
-          <%= link_to "Order Group", order_group_carts_path%>
+          <%= link_to "Order Group", order_group_carts_path %>
         <% end %>
         <%= link_to "Home", root_path %>
         <%= link_to "Restaurants", restaurants_path %>
