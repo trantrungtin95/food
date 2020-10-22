@@ -1,6 +1,7 @@
 Rails.application.routes.draw do
   resources :line_items
   resources :carts do
+    get :abd, on: :collection
     get :order_group, on: :collection
     post :group_code, on: :collection
   end
