@@ -112,7 +112,7 @@ Rails.application.configure do
   
 
   config.action_mailer.delivery_method = :smtp
-  host = 'example.com' #replace with your own url
+  host = 'restaurants-online.herokuapp.com' #replace with your own url
   config.action_mailer.default_url_options = { host: host }
 
 # SMTP settings for gmail
