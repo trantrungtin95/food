@@ -34,6 +34,7 @@ gem 'will_paginate', '>= 3.0'
 gem 'will_paginate-bootstrap4'
 gem 'jquery-rails'
 gem 'bootsnap', '>= 1.4.2', require: false
+gem 'webdrivers'
 
 gem 'geocoder'
 
@@ -58,7 +59,6 @@ group :test do
   # Adds support for Capybara system testing and selenium driver
   gem 'capybara', '>= 2.15'
   gem 'selenium-webdriver'
-  gem 'webdrivers'
   # Easy installation and use of web drivers to run system tests with browsers
 end
 
