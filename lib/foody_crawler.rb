@@ -2,6 +2,7 @@ class FoodyCrawler
     # lists all attrubutes of foody table
     def self.create_restaurant
         
+        Selenium::WebDriver::Chrome.path = "/app/bin/chromedriver"
         Selenium::WebDriver::Chrome.driver_path = "/app/bin/chromedriver"
         
         @browser = Watir::Browser.new:chrome
