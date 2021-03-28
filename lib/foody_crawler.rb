@@ -5,7 +5,7 @@ class FoodyCrawler
         Selenium::WebDriver::Chrome.path = "/app/.apt/usr/bin/google-chrome"
         Selenium::WebDriver::Chrome::Service.driver_path = "/app/bin/chromedriver"
         
-        @browser = Watir::Browser.new:chrome
+        @browser = Watir::Browser.new :chrome
         @browser.goto 'https://www.now.vn/ho-chi-minh/food/deals'
         sleep 5
         hrefs = []
@@ -46,18 +46,18 @@ class FoodyCrawler
         Selenium::WebDriver::Chrome.path = "/app/.apt/usr/bin/google-chrome"
         Selenium::WebDriver::Chrome::Service.driver_path = "/app/bin/chromedriver"
 
-        @browser = Watir::Browser.new:chrome
+        @browser = Watir::Browser.new :chrome
         @browser.goto 'https://www.now.vn/ho-chi-minh/mon-quang-xuyen-viet'
         @browser.divs(class: 'item-restaurant-row').to_a.each do |e|
             name_food = e.img.alt
             img_url = e.img.src
             price_food = e.div(class: 'current-price').text.to_d
-            food = Dish.create(   name: name_food,
-                                        image_url: img_url,
-                                        price: price_food, 
-                                        user_id: 1, 
-                                        restaurant_id: 2
-                                        )
-        end
+            food = Dish.create( name: name_food,
+                                image_url: img_url,
+                                price: price_food, 
+                                user_id: 1, 
+                                restaurant_id: 2
+                                )
+    end
     end 
 end
