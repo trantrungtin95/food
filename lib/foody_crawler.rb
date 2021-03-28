@@ -46,7 +46,7 @@ class FoodyCrawler
         Selenium::WebDriver::Chrome.path = "/app/.apt/usr/bin/google-chrome"
         Selenium::WebDriver::Chrome::Service.driver_path = "/app/.chromedriver/bin/chromedriver"
 
-        @browser = Watir::Browser.new :chrome
+        @browser = Watir::Browser.new:chrome
         @browser.goto 'https://www.now.vn/ho-chi-minh/mon-quang-xuyen-viet'
         @browser.divs(class: 'item-restaurant-row').to_a.each do |e|
             name_food = e.img.alt
@@ -58,6 +58,6 @@ class FoodyCrawler
                                 user_id: 1, 
                                 restaurant_id: 2
                                 )
-    end
+        end
     end 
 end
