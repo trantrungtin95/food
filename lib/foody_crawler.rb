@@ -44,7 +44,7 @@ class FoodyCrawler
     def self.create_food
 
         Selenium::WebDriver::Chrome.path = "/app/.apt/usr/bin/google-chrome"
-        Selenium::WebDriver::Chrome::Service.driver_path = "/app/.apt/usr/bin/chromedriver"
+        Selenium::WebDriver::Chrome::Service.driver_path = "/app/.chromedriver/bin/chromedriver"
 
         @browser = Watir::Browser.new :chrome
         @browser.goto 'https://www.now.vn/ho-chi-minh/mon-quang-xuyen-viet'
